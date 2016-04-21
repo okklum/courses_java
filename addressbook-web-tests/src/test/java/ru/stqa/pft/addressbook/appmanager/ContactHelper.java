@@ -24,11 +24,19 @@ public class ContactHelper extends HelperBase {
     click(By.linkText("add new"));
   }
 
-  public void returnToHomepage() {
-    click(By.linkText("home page"));
-  }
-
   public void submitContactCreation() {
     click(By.xpath("//div[@id='content']/form/input[21]"));
+  }
+
+  public void selectContact() {
+    click(By.name("selected[]"));
+  }
+
+  public void initContactDeletion() {
+    click(By.xpath("//div[@id='content']/form[2]/div[2]/input"));
+  }
+
+  public void confirmContactDeletion() {
+    wd.switchTo().alert().accept();
   }
 }
