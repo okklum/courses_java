@@ -10,7 +10,7 @@ public class ContactCreationTests extends TestBase {
     app.getContactHelper().initContactCreation();
     /* оставляем поле e-mail заполненным по умолчанию
      * добавляем имя группы для выбора из списка групп при создании контакта */
-    app.getContactHelper().fillContactForm(new ContactData("Vasya", "Pupkin", "+79001234567", null, "test1"));
+    app.getContactHelper().fillContactForm(new ContactData("Vasya", "Pupkin", "+79001234567", null, "test1"), true);
     app.getContactHelper().submitContactCreation();
     app.getNavigationHelper().returnToHomepage();
   }

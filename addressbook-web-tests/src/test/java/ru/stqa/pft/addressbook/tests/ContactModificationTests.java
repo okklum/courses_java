@@ -15,7 +15,8 @@ public class ContactModificationTests extends TestBase {
     app.getNavigationHelper().gotoHomePage();
     app.getContactHelper().initContactModification();
     //при модификации контакта нет дропдауна с выбором группы
-    app.getContactHelper().fillContactForm(new ContactData("Vasya", "Pupkin", "+79001234567", "vasya.pupkin@web.de", null));
+    app.getContactHelper().fillContactForm(new ContactData("Vasya", "Pupkin",
+            "+79001234567", "vasya.pupkin@web.de", null), false);
     app.getContactHelper().submitContactModification();
     app.getNavigationHelper().gotoHomePage();
 

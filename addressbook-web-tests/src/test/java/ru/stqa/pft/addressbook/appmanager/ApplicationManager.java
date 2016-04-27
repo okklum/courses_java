@@ -37,7 +37,8 @@ public class ApplicationManager {
       wd = new InternetExplorerDriver();
     }
 
-    wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+    //уменьшила таймаут с 60 SECONDS до 0,5
+    wd.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
     wd.get("http://addressbook/");
     sessionHelper = new SessionHelper(wd);
     navigationHelper = new NavigationHelper(wd);
