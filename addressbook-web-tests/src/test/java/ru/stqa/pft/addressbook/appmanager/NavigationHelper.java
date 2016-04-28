@@ -7,7 +7,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 /**
  * Created by alisa on 21.04.2016.
  */
-public class NavigationHelper extends HelperBase{
+public class NavigationHelper extends HelperBase {
 
   public NavigationHelper(WebDriver wd) {
     super(wd);
@@ -18,7 +18,7 @@ public class NavigationHelper extends HelperBase{
             && wd.findElement(By.tagName("h1")).getText().equals("Groups")
             && isElementPresent(By.name("new"))) {
       return;
-      } else {
+    } else {
       click(By.linkText("groups"));
     }
   }

@@ -60,4 +60,21 @@ public class ContactHelper extends HelperBase {
   public void submitContactModification() {
     click(By.name("update"));
   }
+
+  public void createContact(ContactData contact, boolean b) {
+    initContactCreation();
+    /* оставляем поле e-mail заполненным по умолчанию
+     * добавляем имя группы для выбора из списка групп при создании контакта */
+    fillContactForm(contact, b);
+    submitContactCreation();
+    /* Требуется возврат на страницу контактов = главную, чтобы тест нашел нужный локатор
+     * Завтра переделаю в новый метод
+      * Либо надо выяснить, как ссылаться на другой хелпер, чтобы не дублировать код*/
+    click(By.linkText("home"));
+
+  }
+
+  public boolean isThereAContact() {
+    return isElementPresent(By.name("selected[]"));
+  }
 }

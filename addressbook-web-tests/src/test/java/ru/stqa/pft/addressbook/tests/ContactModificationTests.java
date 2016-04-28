@@ -13,12 +13,15 @@ public class ContactModificationTests extends TestBase {
   public void testContactModification() {
 
     app.getNavigationHelper().gotoHomePage();
+    if (! app.getContactHelper().isThereAContact()) {
+      app.getContactHelper().createContact
+              (new ContactData("Vasya", "Pupkin", "+79001234567", null, "test1"), true);
+    }
     app.getContactHelper().initContactModification();
     //при модификации контакта нет дропдауна с выбором группы
     app.getContactHelper().fillContactForm(new ContactData("Vasya", "Pupkin",
             "+79001234567", "vasya.pupkin@web.de", null), false);
     app.getContactHelper().submitContactModification();
     app.getNavigationHelper().gotoHomePage();
-
-  }
+ }
 }
