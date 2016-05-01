@@ -21,13 +21,14 @@ public class ApplicationManager {
   private ContactHelper contactHelper;
   private GroupHelper groupHelper;
   private String browser;
-  private ApplicationManager app;
+
 
   public ApplicationManager(String browser) {
     this.browser = browser;
   }
 
-  public void init() {
+  //В метод добавлен параметр ApplicationManager app для связи хелперов друг с другом через app менеджер
+  public void init(ApplicationManager app) {
     if (Objects.equals(browser, BrowserType.FIREFOX)) {
       wd = new FirefoxDriver();
       //Еще один вариант записи сравнения объектов вручную; первый быстрее и нагляднее

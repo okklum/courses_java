@@ -14,7 +14,7 @@ public class TestBase {
 
   @BeforeMethod
   public void setUp() throws Exception {
-    app.init();
+    app.init(app);
   }
 
   @AfterMethod
