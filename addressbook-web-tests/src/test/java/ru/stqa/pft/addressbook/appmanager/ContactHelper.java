@@ -13,8 +13,9 @@ import ru.stqa.pft.addressbook.model.ContactData;
  */
 public class ContactHelper extends HelperBase {
 
-  public ContactHelper(WebDriver wd) {
-    super (wd);
+  //передаем в хелпер ссылку на менеджера, чтобы хелперы видели друг друга
+  public ContactHelper(WebDriver wd, ApplicationManager app) {
+    super (wd, app);
   }
 
   public void fillContactForm(ContactData contactData, boolean creation) {
@@ -67,11 +68,11 @@ public class ContactHelper extends HelperBase {
      * добавляем имя группы для выбора из списка групп при создании контакта */
     fillContactForm(contact, b);
     submitContactCreation();
-    /* Требуется возврат на страницу контактов = главную, чтобы тест нашел нужный локатор
-     * Завтра переделаю в новый метод
-      * Либо надо выяснить, как ссылаться на другой хелпер, чтобы не дублировать код*/
-    click(By.linkText("home"));
-
+    /* Требуется возврат на страницу контактов = главную, чтобы тест нашел нужный локатор.
+    Логичнее вставить его тут, чем добавлять в каждый тест лишнюю строчку возврата на главную.
+     Для этого юзаем метод другого хелпера, убираем click(By.linkText("home"));
+    Пока что метод не может использоваться, тест на нем падает. Компиляция без проблем...*/
+    app.getNavigationHelper().gotoHomePage();
   }
 
   public boolean isThereAContact() {

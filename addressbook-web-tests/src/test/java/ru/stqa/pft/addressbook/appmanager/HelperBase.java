@@ -12,10 +12,13 @@ import java.util.Objects;
  * Created by alisa on 21.04.2016.
  */
 public class HelperBase {
+  protected ApplicationManager app;
   protected WebDriver wd;
 
-  public HelperBase(WebDriver wd) {
+  /* Добавляем в конструктор ссылку на менеджера, чтобы хелперы видели друг друга через него */
+  public HelperBase(WebDriver wd, ApplicationManager app) {
     this.wd = wd;
+    this.app = app;
   }
 
   protected void click(By locator) {

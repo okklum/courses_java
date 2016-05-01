@@ -9,8 +9,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
  */
 public class SessionHelper extends HelperBase {
 
-  public SessionHelper(WebDriver wd) {
-    super (wd);
+  public SessionHelper(WebDriver wd, ApplicationManager app) {
+    super (wd, app);
   }
 
   public void login(String username, String password) {
