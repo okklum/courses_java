@@ -4,6 +4,7 @@ package cources.java.sandbox;
  * Created by alisa on 03.05.2016.
  */
 public class Primes {
+  public static boolean res;
 
   public static boolean isPrime(int n) {
     for (int i = 2; i < n; i++) {
