@@ -10,3 +10,4 @@ gradle-app.setting
 # Cache of project
 .gradletasknamecache
 .idea/workspace.xml
+addressbook-web-tests/hs_err_pid932.log
