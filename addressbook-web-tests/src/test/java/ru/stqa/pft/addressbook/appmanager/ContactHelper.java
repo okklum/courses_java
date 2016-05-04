@@ -42,8 +42,9 @@ public class ContactHelper extends HelperBase {
     click(By.xpath("//div[@id='content']/form/input[21]"));
   }
 
-  public void selectContact() {
-    click(By.name("selected[]"));
+  public void selectContact(int index) {
+    wd.findElements(By.name("selected[]")).get(index).click();
+    //click(By.name("selected[]"));
   }
 
   public void initContactDeletion() {
@@ -54,8 +55,12 @@ public class ContactHelper extends HelperBase {
     confirmAlert();
   }
 
-  public void initContactModification() {
-    click(By.xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img"));
+  public void initContactModification(int index) {
+    /*Непонятно, почему не сработал записанный рекордером локатор
+    И как правильно писать локатор с указанием класса? есть уникальный odd и center, вроде перечислять нужно все...
+    wd.findElements(By.xpath("//table[@id='maintable']//[@class='odd']//[@class='center']//td[8]/a/img")).get(index).click();
+    */
+    wd.findElements(By.xpath("//*[@id='maintable']//td[8]/a/img")).get(index).click();
   }
 
   public void submitContactModification() {

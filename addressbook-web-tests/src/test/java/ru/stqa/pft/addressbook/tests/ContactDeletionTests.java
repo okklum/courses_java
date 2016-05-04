@@ -19,7 +19,7 @@ public class ContactDeletionTests extends TestBase {
       app.getContactHelper().createContact
               (new ContactData("Vasya", "Pupkin", "+79001234567", null, "test1"), true);
     }
-    app.getContactHelper().selectContact();
+    app.getContactHelper().selectContact(before - 1);
     app.getContactHelper().initContactDeletion();
     app.getContactHelper().confirmContactDeletionAlert();
     app.getNavigationHelper().gotoHomePage();

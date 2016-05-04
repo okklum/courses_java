@@ -19,10 +19,10 @@ public class ContactModificationTests extends TestBase {
       app.getContactHelper().createContact
               (new ContactData("Vasya", "Pupkin", "+79001234567", null, "test1"), true);
     }
-    app.getContactHelper().initContactModification();
+    app.getContactHelper().initContactModification(before - 1);
     //при модификации контакта нет дропдауна с выбором группы
     app.getContactHelper().fillContactForm(new ContactData("Vasya", "Pupkin",
-            "+79001234567", "vasya.pupkin@web.de", null), false);
+            "+79001234566", "vasya.pupkin@web.de", null), false);
     app.getContactHelper().submitContactModification();
     app.getNavigationHelper().gotoHomePage();
     int after = app.getContactHelper().getContactCount();
