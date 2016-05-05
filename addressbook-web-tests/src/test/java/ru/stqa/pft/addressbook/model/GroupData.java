@@ -22,4 +22,29 @@ public class GroupData {
   public String getFooter() {
     return footer;
   }
+
+  @Override
+  //метод для получения текстового имени объекта, а не адреса в памяти
+  public String toString() {
+    return "GroupData{" +
+            "name='" + name + '\'' +
+            '}';
+  }
+
+  @Override
+  //метод для корректного сравнения имен объектов типа GroupData
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    GroupData groupData = (GroupData) o;
+
+    return name != null ? name.equals(groupData.name) : groupData.name == null;
+
+  }
+
+  @Override
+  public int hashCode() {
+    return name != null ? name.hashCode() : 0;
+  }
 }
