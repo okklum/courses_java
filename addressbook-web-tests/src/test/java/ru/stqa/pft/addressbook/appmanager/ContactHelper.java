@@ -98,9 +98,10 @@ public class ContactHelper extends HelperBase {
     List<WebElement> elements = wd.findElements(By.cssSelector("tr[name='entry']"));
     for (WebElement element: elements) {
       /* тут я сломала мозг: оказывается, можно одной строкой декларировать переменную, найти значение и получить его*/
-      String firstname = element.findElement(By.xpath("//td[2]")).getText();
-      String lastname = element.findElement(By.xpath("//td[3]")).getText();
-      ContactData contact = new ContactData(firstname, lastname, null, null, null);
+      String id = element.findElement(By.tagName("input")).getAttribute("id");
+      String lastname = element.findElement(By.xpath("//td[2]")).getText();
+      String firstname = element.findElement(By.xpath("//td[3]")).getText();
+      ContactData contact = new ContactData(id, firstname, lastname, null, null, null);
       contacts.add(contact);
     }
     return contacts;

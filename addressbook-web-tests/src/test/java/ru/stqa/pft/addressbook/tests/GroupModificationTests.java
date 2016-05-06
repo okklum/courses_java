@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
 
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -21,10 +22,18 @@ public class GroupModificationTests extends TestBase {
     List<GroupData> before = app.getGroupHelper().getGroupList();
     app.getGroupHelper().selectGroup(before.size() - 1);
     app.getGroupHelper().initGroupModification();
-    app.getGroupHelper().fillGroupForm(new GroupData("test2", "test2", "test3"));
+    //сохраняем старый идентификатор из уже существ. последнего объекта в списке before (брать можно любой??)
+    GroupData group = new GroupData(before.get(before.size() - 1).getId(), "test2", "test2", "test3");
+    app.getGroupHelper().fillGroupForm(group);
     app.getGroupHelper().GroupModification();
     app.getGroupHelper().returnToGroupPage();
     List<GroupData> after = app.getGroupHelper().getGroupList();
     Assert.assertEquals(after.size(), before.size());
+
+    //приводим в соответствие оба списка
+    before.remove(before.size() - 1);
+    before.add(group);
+    //сравниваем не сортированные списки, а несортированные множества
+    Assert.assertEquals(new HashSet<Object>(before), new HashSet<Object>(after));
   }
 }
