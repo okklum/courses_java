@@ -79,9 +79,11 @@ public class GroupHelper extends HelperBase {
     //Получаем список объектов типа WebElement, из каждого извлекаем текст = имя группы
     for (WebElement element: elements) {
       String name = element.getText();
-      //Получаем уникальный атрибут Value из <input type="checkbox" title="Select (test1)" value="45" name="selected[]"/>
-      String id = element.findElement(By.tagName("input")).getAttribute("Value");
-      //создаем новый объект group типа GroupData, заполняем известными данными
+      /* Получаем уникальный атрибут Value из
+      <input type="checkbox" title="Select (test1)" value="45" name="selected[]"/>
+       Для вычисления max id преобразуем новый int id из строки в число*/
+      int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("Value"));
+      // создаем новый объект group типа GroupData, заполняем известными данными
       GroupData group = new GroupData(id, name, null, null);
       //добавляем созданный объект group в список groups
       groups.add(group);

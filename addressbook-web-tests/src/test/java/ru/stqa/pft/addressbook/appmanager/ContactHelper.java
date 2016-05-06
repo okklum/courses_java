@@ -97,8 +97,8 @@ public class ContactHelper extends HelperBase {
     //Селектор "tr#entry" не сработал, вероятно, из-за наличия пустого класса в теге <tr class='' name='entry'>
     List<WebElement> elements = wd.findElements(By.cssSelector("tr[name='entry']"));
     for (WebElement element: elements) {
-      /* тут я сломала мозг: оказывается, можно одной строкой декларировать переменную, найти значение и получить его*/
-      String id = element.findElement(By.tagName("input")).getAttribute("id");
+      //преобразовываем String id в int id
+      int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
       String lastname = element.findElement(By.xpath("//td[2]")).getText();
       String firstname = element.findElement(By.xpath("//td[3]")).getText();
       ContactData contact = new ContactData(id, firstname, lastname, null, null, null);
