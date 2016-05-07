@@ -12,7 +12,6 @@ import java.util.List;
 public class ContactDeletionTests extends TestBase {
 
   @Test
-
   public void testContactDeletion(){
 
     app.getNavigationHelper().gotoHomePage();
