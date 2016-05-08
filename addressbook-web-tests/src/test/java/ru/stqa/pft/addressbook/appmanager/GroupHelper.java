@@ -3,7 +3,6 @@ package ru.stqa.pft.addressbook.appmanager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import ru.stqa.pft.addressbook.model.GroupData;
 
 import java.util.ArrayList;
@@ -60,6 +59,14 @@ public class GroupHelper extends HelperBase {
     returnToGroupPage();
   }
 
+  public void modifyGroup(int index, GroupData group) {
+    selectGroup(index);
+    initGroupModification();
+    fillGroupForm(group);
+    GroupModification();
+    returnToGroupPage();
+  }
+
   public boolean isThereAGroup() {
     return isElementPresent(By.name("selected[]"));
   }
@@ -77,7 +84,7 @@ public class GroupHelper extends HelperBase {
      * в селекторе все элементы класса group в теге span*/
     List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
     //Получаем список объектов типа WebElement, из каждого извлекаем текст = имя группы
-    for (WebElement element: elements) {
+    for (WebElement element : elements) {
       String name = element.getText();
       /* Получаем уникальный атрибут Value из
       <input type="checkbox" title="Select (test1)" value="45" name="selected[]"/>
