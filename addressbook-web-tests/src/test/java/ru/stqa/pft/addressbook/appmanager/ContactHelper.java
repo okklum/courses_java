@@ -69,7 +69,7 @@ public class ContactHelper extends HelperBase {
     click(By.name("update"));
   }
 
-  public void createContact(ContactData contact, boolean b) {
+  public void create(ContactData contact, boolean b) {
     initContactCreation();
     /* оставляем поле e-mail заполненным по умолчанию
      * добавляем имя группы для выбора из списка групп при создании контакта */
@@ -78,15 +78,22 @@ public class ContactHelper extends HelperBase {
     /* Требуется возврат на страницу контактов = главную, чтобы тест нашел нужный локатор.
     Логичнее вставить его тут, чем добавлять в каждый тест лишнюю строчку возврата на главную.
      Для этого юзаем метод другого хелпера, убираем click(By.linkText("home"));*/
-    app.getNavigationHelper().gotoHomePage();
+    app.goTo().homePage();
   }
 
-  public void modifyContact(int index, ContactData contact) {
+  public void modify(int index, ContactData contact) {
     initContactModification(index);
     //при модификации контакта нет дропдауна с выбором группы
     fillContactForm(contact, false);
     submitContactModification();
-    app.getNavigationHelper().gotoHomePage();
+    app.goTo().homePage();
+  }
+
+  public void delete(int index) {
+    app.contact().selectContact(index);
+    app.contact().initContactDeletion();
+    app.contact().confirmContactDeletionAlert();
+    app.goTo().homePage();
   }
 
   public boolean isThereAContact() {
@@ -97,17 +104,15 @@ public class ContactHelper extends HelperBase {
     return wd.findElements(By.name("selected[]")).size();
   }
 
-  public List<ContactData> getContactList() {
+  public List<ContactData> list() {
     List<ContactData> contacts = new ArrayList<ContactData>();
-    //Селектор "tr#entry" не сработал, вероятно, из-за наличия пустого класса в теге <tr class='' name='entry'>
     List<WebElement> elements = wd.findElements(By.cssSelector("tr[name='entry']"));
     for (WebElement element : elements) {
       //преобразовываем String id в int id
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
       String lastname = element.findElement(By.xpath("//td[2]")).getText();
       String firstname = element.findElement(By.xpath("//td[3]")).getText();
-      ContactData contact = new ContactData(id, firstname, lastname, null, null, null);
-      contacts.add(contact);
+      contacts.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname));
     }
     return contacts;
   }

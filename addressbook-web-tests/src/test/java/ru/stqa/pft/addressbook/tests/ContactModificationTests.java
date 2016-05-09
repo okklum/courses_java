@@ -19,7 +19,8 @@ public class ContactModificationTests extends TestBase {
     //if (!app.contact().isThereAContact()) {
     if (app.contact().list().size() == 0) {
       app.contact().create
-              (new ContactData("Vasya", "Pupkin", "+79001234567", null, "test1"), true);
+              (new ContactData()
+                      .withFirstname("Vasya").withLastname("Pupkin").withMobile("+79001234567").withGroup("test1"),true);
     }
   }
 
@@ -28,8 +29,9 @@ public class ContactModificationTests extends TestBase {
     List<ContactData> before = app.contact().list();
     int index = before.size() - 1;
     //сохраняем старый id в переменной index из уже существ. последнего объекта
-    ContactData contact = new ContactData(before.get(index).getId(), "Vasya", "Pupkin",
-            "+79001234566", "vasya.pupkin@web.de", null);
+    ContactData contact = new ContactData()
+            .withId(before.get(index).getId()).withFirstname("Vasya").withLastname("Pupkin")
+            .withMobile("+79001234566").withEmail("vasya.pupkin@web.de");
     app.contact().modify(index, contact);
     List<ContactData> after = app.contact().list();
     Assert.assertEquals(after.size(), before.size());

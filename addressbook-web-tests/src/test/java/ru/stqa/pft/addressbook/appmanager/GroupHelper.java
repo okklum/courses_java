@@ -97,9 +97,8 @@ public class GroupHelper extends HelperBase {
        Для вычисления max id преобразуем новый int id из строки в число*/
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("Value"));
       // создаем новый объект group типа GroupData, заполняем известными данными
-      GroupData group = new GroupData(id, name, null, null);
       //добавляем созданный объект group в список groups
-      groups.add(group);
+      groups.add(new GroupData().withId(id).withName(name));
     }
     return groups;
   }

@@ -15,7 +15,8 @@ public class ContactCreationTests extends TestBase {
     List<ContactData> before = app.contact().list();
      /* оставляем поле e-mail заполненным по умолчанию
      * добавляем имя группы для выбора из списка групп при создании контакта */
-    ContactData contact = new ContactData("Vasya", "Pupkin", "+79001234566", null, "test1");
+    ContactData contact = new ContactData()
+            .withFirstname("Vasya").withLastname("Pupkin").withMobile("+79001234566").withGroup("test1");
     app.contact().create(contact, true);
     List<ContactData> after = app.contact().list();
     Assert.assertEquals(after.size(), before.size() + 1);

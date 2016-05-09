@@ -14,13 +14,12 @@ public class GroupCreationTests extends TestBase {
     app.goTo().groupPage();
     /*переменные before и after теперь содержат не количество, а список эл-тов*/
     List<GroupData> before = app.group().list();
-    GroupData group = new GroupData("test21", null, null);
+    GroupData group = new GroupData().withName("test21");
     app.group().create(group);
     List<GroupData> after = app.group().list();
     Assert.assertEquals(after.size(), before.size() + 1);
 
-    /* Другой вариант проверки: оставляем сравнение по id, ищем id с максимальным значением*/
-    group.setId(after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId());
+    //приводим в соответствие оба списка, сортируем и сравниваем только по имени
     before.add(group);
     Comparator<? super GroupData> byId = (g1, g2) -> Integer.compare(g1.getId(), g2.getId());
     before.sort(byId);
