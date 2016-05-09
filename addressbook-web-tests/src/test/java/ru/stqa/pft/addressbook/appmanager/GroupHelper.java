@@ -6,7 +6,9 @@ import org.openqa.selenium.WebElement;
 import ru.stqa.pft.addressbook.model.GroupData;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by alisa on 21.04.2016.
@@ -39,9 +41,8 @@ public class GroupHelper extends HelperBase {
     click(By.name("delete"));
   }
 
-  public void selectGroup(int index) {
-    //выбираем уже определенный элемент в списке по параметру index
-    wd.findElements(By.name("selected[]")).get(index).click();
+  public void selectGroupById(int id) {
+    wd.findElement(By.cssSelector("input[value='" +id + "']")).click();
   }
 
   public void initGroupModification() {
@@ -59,18 +60,18 @@ public class GroupHelper extends HelperBase {
     returnToGroupPage();
   }
 
-  public void modify(int index, GroupData group) {
-    selectGroup(index);
+  public void modify(GroupData group) {
+    selectGroupById(group.getId());
     initGroupModification();
     fillGroupForm(group);
     GroupModification();
     returnToGroupPage();
   }
 
-  public void delete(int index) {
-   selectGroup(index);
-   deleteSelectedGroups();
-   returnToGroupPage();
+  public void delete(GroupData group) {
+    selectGroupById(group.getId());
+    deleteSelectedGroups();
+    returnToGroupPage();
   }
 
   public boolean isThereAGroup() {
@@ -83,23 +84,20 @@ public class GroupHelper extends HelperBase {
 
   }
 
-  public List<GroupData> list() {
-    //Создаем список groups, который будем заполнять, с указанием конкретного класса ArrayList
-    List<GroupData> groups = new ArrayList<GroupData>();
-    /* Извлекаем данные со страницы веб-приложения: пока только название группы,
-     * в селекторе все элементы класса group в теге span*/
+  //Возвращает не список, а множество
+  public Set<GroupData> all() {
+    //HashSet - наиболее популярная реализация множеств, параметр не обязателен
+    Set<GroupData> groups = new HashSet<GroupData>();
+    /* Извлекаем данные со страницы веб-приложения*/
     List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
     //Получаем список объектов типа WebElement, из каждого извлекаем текст = имя группы
     for (WebElement element : elements) {
       String name = element.getText();
-      /* Получаем уникальный атрибут Value из
-      <input type="checkbox" title="Select (test1)" value="45" name="selected[]"/>
-       Для вычисления max id преобразуем новый int id из строки в число*/
+      //Получаем уникальный атрибут Value, для вычисления max id преобразуем новый int id из строки в число
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("Value"));
-      // создаем новый объект group типа GroupData, заполняем известными данными
-      //добавляем созданный объект group в список groups
       groups.add(new GroupData().withId(id).withName(name));
     }
     return groups;
   }
+
 }

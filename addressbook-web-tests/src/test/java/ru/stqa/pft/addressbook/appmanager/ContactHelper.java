@@ -7,8 +7,9 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by alisa on 21.04.2016.
@@ -46,7 +47,10 @@ public class ContactHelper extends HelperBase {
 
   public void selectContact(int index) {
     wd.findElements(By.name("selected[]")).get(index).click();
-    //click(By.name("selected[]"));
+   }
+
+  public void selectContactById(int id) {
+    wd.findElement(By.cssSelector("input[id='" +id + "']")).click();
   }
 
   public void initContactDeletion() {
@@ -57,12 +61,10 @@ public class ContactHelper extends HelperBase {
     confirmAlert();
   }
 
-  public void initContactModification(int index) {
-    /*Непонятно, почему не сработал записанный рекордером локатор
-    И как правильно писать локатор с указанием класса? есть уникальный odd и center, вроде перечислять нужно все...
-    wd.findElements(By.xpath("//table[@id='maintable']//[@class='odd']//[@class='center']//td[8]/a/img")).get(index).click();
-    */
-    wd.findElements(By.xpath("//*[@id='maintable']//td[8]/a/img")).get(index).click();
+  //немного отредактировала подсказку Алексея из общего чата
+  public void modifyContactById (int id) {
+    WebElement checkbox = wd.findElement(By.id("" + id));
+    checkbox.findElement(By.xpath("//td[8]/a")).click();
   }
 
   public void submitContactModification() {
@@ -81,18 +83,18 @@ public class ContactHelper extends HelperBase {
     app.goTo().homePage();
   }
 
-  public void modify(int index, ContactData contact) {
-    initContactModification(index);
+  public void modify(ContactData contact) {
+    modifyContactById(contact.getId());
     //при модификации контакта нет дропдауна с выбором группы
     fillContactForm(contact, false);
     submitContactModification();
     app.goTo().homePage();
   }
 
-  public void delete(int index) {
-    app.contact().selectContact(index);
-    app.contact().initContactDeletion();
-    app.contact().confirmContactDeletionAlert();
+  public void delete(ContactData contact) {
+    selectContactById(contact.getId());
+    initContactDeletion();
+    confirmContactDeletionAlert();
     app.goTo().homePage();
   }
 
@@ -104,8 +106,8 @@ public class ContactHelper extends HelperBase {
     return wd.findElements(By.name("selected[]")).size();
   }
 
-  public List<ContactData> list() {
-    List<ContactData> contacts = new ArrayList<ContactData>();
+  public Set<ContactData> all() {
+    Set<ContactData> contacts = new HashSet<ContactData>();
     List<WebElement> elements = wd.findElements(By.cssSelector("tr[name='entry']"));
     for (WebElement element : elements) {
       //преобразовываем String id в int id
@@ -116,4 +118,5 @@ public class ContactHelper extends HelperBase {
     }
     return contacts;
   }
+
 }
