@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
+import ru.stqa.pft.addressbook.model.ContactSuite;
 
 import java.util.HashSet;
 import java.util.List;
@@ -64,7 +65,7 @@ public class ContactHelper extends HelperBase {
   //немного отредактировала подсказку Алексея из общего чата
   public void modifyContactById (int id) {
     WebElement checkbox = wd.findElement(By.id("" + id));
-    checkbox.findElement(By.xpath("//td[8]/a")).click();
+    checkbox.findElement(By.xpath("//*[@id='maintable']//td[8]/a")).click();
   }
 
   public void submitContactModification() {
@@ -106,17 +107,17 @@ public class ContactHelper extends HelperBase {
     return wd.findElements(By.name("selected[]")).size();
   }
 
-  public Set<ContactData> all() {
-    Set<ContactData> contacts = new HashSet<ContactData>();
+  public ContactSuite all() {
+    ContactSuite contactSuite = new ContactSuite();
     List<WebElement> elements = wd.findElements(By.cssSelector("tr[name='entry']"));
     for (WebElement element : elements) {
       //преобразовываем String id в int id
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
       String lastname = element.findElement(By.xpath("//td[2]")).getText();
       String firstname = element.findElement(By.xpath("//td[3]")).getText();
-      contacts.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname));
+      contactSuite.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname));
     }
-    return contacts;
+    return contactSuite;
   }
 
 }

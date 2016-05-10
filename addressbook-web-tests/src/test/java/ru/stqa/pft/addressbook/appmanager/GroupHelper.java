@@ -4,11 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import ru.stqa.pft.addressbook.model.GroupData;
+import ru.stqa.pft.addressbook.model.GroupSuite;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by alisa on 21.04.2016.
@@ -85,9 +83,8 @@ public class GroupHelper extends HelperBase {
   }
 
   //Возвращает не список, а множество
-  public Set<GroupData> all() {
-    //HashSet - наиболее популярная реализация множеств, параметр не обязателен
-    Set<GroupData> groups = new HashSet<GroupData>();
+  public GroupSuite all() {
+    GroupSuite groupSuite = new GroupSuite();
     /* Извлекаем данные со страницы веб-приложения*/
     List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
     //Получаем список объектов типа WebElement, из каждого извлекаем текст = имя группы
@@ -95,9 +92,9 @@ public class GroupHelper extends HelperBase {
       String name = element.getText();
       //Получаем уникальный атрибут Value, для вычисления max id преобразуем новый int id из строки в число
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("Value"));
-      groups.add(new GroupData().withId(id).withName(name));
+      groupSuite.add(new GroupData().withId(id).withName(name));
     }
-    return groups;
+    return groupSuite;
   }
 
 }
