@@ -78,9 +78,8 @@ public class ContactHelper extends HelperBase {
      * добавляем имя группы для выбора из списка групп при создании контакта */
     fillContactForm(contact, b);
     submitContactCreation();
-    /* Требуется возврат на страницу контактов = главную, чтобы тест нашел нужный локатор.
-    Логичнее вставить его тут, чем добавлять в каждый тест лишнюю строчку возврата на главную.
-     Для этого юзаем метод другого хелпера, убираем click(By.linkText("home"));*/
+    contactCache = null;
+    /* Требуется возврат на страницу контактов = главную, чтобы тест нашел нужный локатор.*/
     app.goTo().homePage();
   }
 
@@ -89,6 +88,7 @@ public class ContactHelper extends HelperBase {
     //при модификации контакта нет дропдауна с выбором группы
     fillContactForm(contact, false);
     submitContactModification();
+    contactCache = null;
     app.goTo().homePage();
   }
 
@@ -96,6 +96,7 @@ public class ContactHelper extends HelperBase {
     selectContactById(contact.getId());
     initContactDeletion();
     confirmContactDeletionAlert();
+    contactCache = null;
     app.goTo().homePage();
   }
 
@@ -107,17 +108,22 @@ public class ContactHelper extends HelperBase {
     return wd.findElements(By.name("selected[]")).size();
   }
 
+  public ContactSuite contactCache = null;
+
   public ContactSuite all() {
-    ContactSuite contactSuite = new ContactSuite();
+    if (contactCache != null) {
+      return new ContactSuite(contactCache);
+    }
+    contactCache = new ContactSuite();
     List<WebElement> elements = wd.findElements(By.cssSelector("tr[name='entry']"));
     for (WebElement element : elements) {
       //преобразовываем String id в int id
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
       String lastname = element.findElement(By.xpath("//td[2]")).getText();
       String firstname = element.findElement(By.xpath("//td[3]")).getText();
-      contactSuite.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname));
+      contactCache.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname));
     }
-    return contactSuite;
+    return contactCache;
   }
 
 }

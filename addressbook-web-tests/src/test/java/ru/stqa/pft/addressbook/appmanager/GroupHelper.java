@@ -55,6 +55,7 @@ public class GroupHelper extends HelperBase {
     initGroupCreation();
     fillGroupForm(group);
     submitGroupCreation();
+    groupCache = null;
     returnToGroupPage();
   }
 
@@ -63,12 +64,14 @@ public class GroupHelper extends HelperBase {
     initGroupModification();
     fillGroupForm(group);
     GroupModification();
+    groupCache = null;
     returnToGroupPage();
   }
 
   public void delete(GroupData group) {
     selectGroupById(group.getId());
     deleteSelectedGroups();
+    groupCache = null;
     returnToGroupPage();
   }
 
@@ -79,12 +82,16 @@ public class GroupHelper extends HelperBase {
   public int getGroupCount() {
     //return wd.findElements(By.name("selected[]")).size();
     return wd.findElements(By.className("group")).size();
-
   }
 
-  //Возвращает не список, а множество
+  public GroupSuite groupCache = null;
+
   public GroupSuite all() {
-    GroupSuite groupSuite = new GroupSuite();
+    if (groupCache != null) {
+      //возвращаем копию кеша, чтобы не испортить его
+      return new GroupSuite(groupCache);
+    }
+    groupCache = new GroupSuite();
     /* Извлекаем данные со страницы веб-приложения*/
     List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
     //Получаем список объектов типа WebElement, из каждого извлекаем текст = имя группы
@@ -92,9 +99,9 @@ public class GroupHelper extends HelperBase {
       String name = element.getText();
       //Получаем уникальный атрибут Value, для вычисления max id преобразуем новый int id из строки в число
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("Value"));
-      groupSuite.add(new GroupData().withId(id).withName(name));
+      groupCache.add(new GroupData().withId(id).withName(name));
     }
-    return groupSuite;
+    return new GroupSuite(groupCache);
   }
 
 }
