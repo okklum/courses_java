@@ -1,12 +1,9 @@
 package ru.stqa.pft.addressbook.tests;
 
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -25,7 +22,8 @@ public class ContactInfoTests extends TestBase {
       app.contact().create
               (new ContactData()
                       .withFirstname("Vasya").withLastname("Pupkin").withHomePhone("1234567")
-                      .withMobilePhone("+79001234567").withWorkPhone("43532134567").withGroup("test1"),true);
+                      .withMobilePhone("+7(900)1234567").withWorkPhone("435 321 34 56").withEmail("vasya@mail.ru")
+                      .withEmail("vasya-work@mail.ru").withAddress("Советский союз").withGroup("test1"),true);
     }
   }
 
@@ -36,6 +34,13 @@ public class ContactInfoTests extends TestBase {
     ContactData contactInfoEditForm = app.contact().infoEditForm(contact);
 
     assertThat(contact.getAllPhones(), equalTo(mergePhones(contactInfoEditForm)));
+    assertThat(contact.getAllEMailes(), equalTo(mergeEmailes(contactInfoEditForm)));
+    assertThat(contact.getAddress(), equalTo(cleanedTabs(contactInfoEditForm.getAddress())));
+  }
+
+  private String mergeEmailes(ContactData contact) {
+    return Arrays.asList(contact.getEmail(),contact.getEmail2(),contact.getEmail3()).stream()
+            .filter((s) -> !s.equals("")).collect(Collectors.joining("\n"));
   }
 
   private String mergePhones(ContactData contact) {
@@ -46,8 +51,13 @@ public class ContactInfoTests extends TestBase {
 
   //вспом. метод для чистки данных из формы редактирования контакта
   public static String cleaned(String phone) {
-    //исключаем '+' из чистки, т.к.он не обрезается на странице контактов
-    return phone.replaceAll("\\s","").replaceAll("\\-\\)\\(","");
+    //не включаем '+', т.к.он не обрезается на странице контактов; исправила выражение
+    return phone.replaceAll("\\s","").replaceAll("[-)(\\.]","");
+  }
+
+  public static String cleanedTabs(String data) {
+    //на всякий случай чистим переносы строк и пробелы на конце в данных (могут быть в адресе)
+    return data.replaceAll("\\s$","");
   }
 
 }

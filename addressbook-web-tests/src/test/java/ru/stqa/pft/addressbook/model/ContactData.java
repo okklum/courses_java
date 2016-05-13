@@ -9,6 +9,9 @@ public class ContactData {
   private String workPhone;
   private String allPhones;
   private String email;
+  private String email2;
+  private String email3;
+  private String allEMailes;
   private String group;
   private String address;
 
@@ -57,6 +60,21 @@ public class ContactData {
     return this;
   }
 
+  public ContactData withEmail2(String email2) {
+    this.email2 = email2;
+    return this;
+  }
+
+  public ContactData withEmail3(String email3) {
+    this.email3 = email3;
+    return this;
+  }
+
+  public ContactData withAllEMailes(String allEMailes) {
+    this.allEMailes = allEMailes;
+    return this;
+  }
+
   public ContactData withAddress(String address) {
     this.address = address;
     return this;
@@ -66,6 +84,7 @@ public class ContactData {
     this.group = group;
     return this;
   }
+
 
   public String getFirstname() {
     return firstname;
@@ -96,6 +115,18 @@ public class ContactData {
     return email;
   }
 
+  public String getEmail2() {
+    return email2;
+  }
+
+  public String getEmail3() {
+    return email3;
+  }
+
+  public String getAllEMailes() {
+    return allEMailes;
+  }
+
   public String getAddress() {
     return address;
   }
@@ -104,12 +135,23 @@ public class ContactData {
     return group;
   }
 
+
   @Override
   public String toString() {
     return "ContactData{" +
-            "id='" + id + '\'' +
+            "id=" + id +
             ", firstname='" + firstname + '\'' +
             ", lastname='" + lastname + '\'' +
+            ", homePhone='" + homePhone + '\'' +
+            ", mobilePhone='" + mobilePhone + '\'' +
+            ", workPhone='" + workPhone + '\'' +
+            ", allPhones='" + allPhones + '\'' +
+            ", email='" + email + '\'' +
+            ", email2='" + email2 + '\'' +
+            ", email3='" + email3 + '\'' +
+            ", allEMailes='" + allEMailes + '\'' +
+            ", group='" + group + '\'' +
+            ", address='" + address + '\'' +
             '}';
   }
 
@@ -133,5 +175,4 @@ public class ContactData {
     result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
     return result;
   }
-
 }

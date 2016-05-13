@@ -25,9 +25,9 @@ public class ContactHelper extends HelperBase {
     type(By.name("lastname"), contactData.getLastname());
     type(By.name("home"), contactData.getHomePhone());
     type(By.name("mobile"), contactData.getMobilePhone());
-    type(By.name("work"), contactData.getHomePhone());
+    type(By.name("work"), contactData.getWorkPhone());
     type(By.name("email"), contactData.getEmail());
-    //type(By.name("address"), contactData.getAddress());
+    type(By.name("address"), contactData.getAddress());
 
 
     if (creation) {
@@ -125,8 +125,10 @@ public class ContactHelper extends HelperBase {
       String lastname = element.findElement(By.xpath("//td[2]")).getText();
       String firstname = element.findElement(By.xpath("//td[3]")).getText();
       String allPhones = element.findElement(By.xpath("//td[6]")).getText();
+      String allEmails = element.findElement(By.xpath("//td[5]")).getText();
+      String address = element.findElement(By.xpath("//td[4]")).getText();
       contactCache.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname)
-              .withAllPhones(allPhones));
+              .withAllPhones(allPhones).withAllEMailes(allEmails).withAddress(address));
     }
     return contactCache;
   }
@@ -138,12 +140,15 @@ public class ContactHelper extends HelperBase {
     String home = wd.findElement(By.name("home")).getAttribute("Value");
     String mobile = wd.findElement(By.name("mobile")).getAttribute("Value");
     String work = wd.findElement(By.name("work")).getAttribute("Value");
-    //String address = wd.findElement(By.name("address")).getAttribute("Value");
+    String email = wd.findElement(By.name("email")).getAttribute("value");
+    String email2 = wd.findElement(By.name("email2")).getAttribute("value");
+    String email3 = wd.findElement(By.name("email3")).getAttribute("value");
+    //почему-то некоторые данные адресов возвращает только getText, а не getAttribute
+    String address = wd.findElement(By.name("address")).getAttribute("value");
     wd.navigate().back();
-    return new ContactData().withId(contact.getId()).withFirstname(firstname)
-            .withLastname(lastname).withHomePhone(home)
-            .withMobilePhone(mobile).withWorkPhone(work);
-            //.withAddress(contact.getAddress());
+    return new ContactData().withId(contact.getId()).withFirstname(firstname).withLastname(lastname)
+            .withHomePhone(home).withMobilePhone(mobile).withWorkPhone(work)
+            .withEmail(email).withEmail2(email2).withEmail3(email3).withAddress(address);
   }
 
 }
