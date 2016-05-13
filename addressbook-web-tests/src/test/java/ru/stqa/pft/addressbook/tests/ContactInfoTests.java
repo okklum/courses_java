@@ -6,6 +6,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 
@@ -31,14 +35,19 @@ public class ContactInfoTests extends TestBase {
     ContactData contact = app.contact().all().iterator().next();
     ContactData contactInfoEditForm = app.contact().infoEditForm(contact);
 
-    assertThat(contact.getHomePhone(), equalTo(cleaned(contactInfoEditForm.getHomePhone())));
-    assertThat(contact.getMobilePhone(), equalTo(cleaned(contactInfoEditForm.getMobilePhone())));
-    assertThat(contact.getWorkPhone(), equalTo(cleaned(contactInfoEditForm.getWorkPhone())));
+    assertThat(contact.getAllPhones(), equalTo(mergePhones(contactInfoEditForm)));
   }
 
-  public String cleaned(String phone) {
-    //как добавить экранированный символ "+" в регулярное выражение?
-    return phone.replaceAll("\\s","").replaceAll("[^0-9]","");
+  private String mergePhones(ContactData contact) {
+    return Arrays.asList(contact.getHomePhone(),contact.getMobilePhone(),contact.getWorkPhone())
+            .stream().filter((s) -> !s.equals(""))
+            .map(ContactInfoTests::cleaned).collect(Collectors.joining("\n"));
+  }
+
+  //вспом. метод для чистки данных из формы редактирования контакта
+  public static String cleaned(String phone) {
+    //исключаем '+' из чистки, т.к.он не обрезается на странице контактов
+    return phone.replaceAll("\\s","").replaceAll("\\-\\)\\(","");
   }
 
 }

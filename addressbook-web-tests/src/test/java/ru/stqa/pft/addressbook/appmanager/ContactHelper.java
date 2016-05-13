@@ -124,18 +124,9 @@ public class ContactHelper extends HelperBase {
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
       String lastname = element.findElement(By.xpath("//td[2]")).getText();
       String firstname = element.findElement(By.xpath("//td[3]")).getText();
-      //разрезаем полученную строку с телефонами, критерий - перевод строки
-      String[] phones = element.findElement(By.xpath("//td[6]")).getText().split("\n");
-       /*if (phones.length <= 2) {
-        app.goTo().homePage();
-        app.contact().create(new ContactData().withHomePhone("123").withMobilePhone("321")
-                .withWorkPhone("3423"), true);
-        click(By.tagName("submit"));
-         contactCache.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname)
-                 .withHomePhone(phones[0]).withMobilePhone(phones[1]).withWorkPhone(phones[2]));
-      }else*/
+      String allPhones = element.findElement(By.xpath("//td[6]")).getText();
       contactCache.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname)
-              .withHomePhone(phones[0]).withMobilePhone(phones[1]).withWorkPhone(phones[2]));
+              .withAllPhones(allPhones));
     }
     return contactCache;
   }
