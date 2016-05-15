@@ -27,6 +27,8 @@ public class ContactHelper extends HelperBase {
     type(By.name("mobile"), contactData.getMobilePhone());
     type(By.name("work"), contactData.getWorkPhone());
     type(By.name("email"), contactData.getEmail());
+    type(By.name("email2"), contactData.getEmail2());
+    type(By.name("email3"), contactData.getEmail3());
     type(By.name("address"), contactData.getAddress());
 
 
@@ -151,4 +153,23 @@ public class ContactHelper extends HelperBase {
             .withEmail(email).withEmail2(email2).withEmail3(email3).withAddress(address);
   }
 
+  /* данных нет, т.к. в методе all не определена переменная allData
+   public ContactData infoCardForm(ContactData contact) {
+    readContactCardById(contact.getId());
+    String contactCardInfo = wd.findElement(By.xpath("//div[@id='content']")).getText();
+    wd.navigate().back();
+    return new ContactData().withAllData(contactCardInfo);
+  }*/
+
+  public String infoCardForm(ContactData contact) {
+    readContactCardById(contact.getId());
+    String contactCardInfo = wd.findElement(By.xpath("//div[@id='content']")).getText();
+    wd.navigate().back();
+    return contactCardInfo;
+  }
+
+  private void readContactCardById(int id) {
+    WebElement checkbox = wd.findElement(By.id("" + id));
+    checkbox.findElement(By.xpath("//*[@id='maintable']//td[7]/a")).click();
+  }
 }
