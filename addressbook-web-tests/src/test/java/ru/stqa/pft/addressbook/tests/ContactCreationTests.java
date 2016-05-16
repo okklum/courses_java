@@ -4,6 +4,8 @@ import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.ContactSuite;
 
+import java.io.File;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -13,11 +15,10 @@ public class ContactCreationTests extends TestBase {
   public void testContactCreation() {
     app.goTo().homePage();
     ContactSuite before = app.contact().all();
-     /* оставляем поле e-mail заполненным по умолчанию
-     * добавляем имя группы для выбора из списка групп при создании контакта */
+    File photo = new File("/src/test/resources/012.png");
     ContactData contact = new ContactData()
-            .withFirstname("Vasya").withLastname("Pupkin").withMobilePhone("+79001234564")
-            .withHomePhone("1234567").withAddress("").withGroup("test1");
+            .withFirstname("Vasya").withLastname("Pupkin").withMobilePhone("+79001234565")
+            .withHomePhone("1234567").withGroup("test1").withPhoto(photo);
     app.contact().create(contact, true);
     assertThat(app.contact().counter(),equalTo(before.size() + 1));
     ContactSuite after = app.contact().all();
@@ -29,10 +30,9 @@ public class ContactCreationTests extends TestBase {
   public void testBadContactCreation() {
     app.goTo().homePage();
     ContactSuite before = app.contact().all();
-     /* оставляем поле e-mail заполненным по умолчанию
-     * добавляем имя группы для выбора из списка групп при создании контакта */
     ContactData contact = new ContactData()
-            .withFirstname("'Vasya'").withLastname("Pupkin").withMobilePhone("+79001234569").withGroup("test1");
+            .withFirstname("'Vasya'").withLastname("Pupkin").withMobilePhone("+79001234569")
+            .withGroup("test1");
     app.contact().create(contact, true);
     assertThat(app.contact().counter(),equalTo(before.size()));
     ContactSuite after = app.contact().all();
