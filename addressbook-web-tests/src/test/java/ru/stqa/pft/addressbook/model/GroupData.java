@@ -43,6 +43,7 @@ public class GroupData {
   }
 
   @Override
+  //В отчете прохождения теста данные из toString
   public String toString() {
     return "GroupData{" +
             "id=" + id +
