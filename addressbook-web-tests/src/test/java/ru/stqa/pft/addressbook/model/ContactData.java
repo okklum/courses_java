@@ -1,8 +1,11 @@
 package ru.stqa.pft.addressbook.model;
 
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+
 import java.io.File;
 
 public class ContactData {
+  @XStreamOmitField
   private int id = Integer.MAX_VALUE;
   private String firstname;
   private String lastname;
@@ -154,16 +157,8 @@ public class ContactData {
             "id=" + id +
             ", firstname='" + firstname + '\'' +
             ", lastname='" + lastname + '\'' +
-            ", homePhone='" + homePhone + '\'' +
             ", mobilePhone='" + mobilePhone + '\'' +
-            ", workPhone='" + workPhone + '\'' +
-            ", allPhones='" + allPhones + '\'' +
             ", email='" + email + '\'' +
-            ", email2='" + email2 + '\'' +
-            ", email3='" + email3 + '\'' +
-            ", allEMailes='" + allEMailes + '\'' +
-            ", group='" + group + '\'' +
-            ", address='" + address + '\'' +
             '}';
   }
 
