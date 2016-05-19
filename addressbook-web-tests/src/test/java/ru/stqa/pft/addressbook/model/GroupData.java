@@ -1,5 +1,6 @@
 package ru.stqa.pft.addressbook.model;
 
+import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
@@ -7,10 +8,14 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 public class GroupData {
   @XStreamOmitField
-  //аннотация указывает на пропуск следующего поля в генерируемом файле (id)
+  //аннотация указывает на пропуск следующего поля в генерируемом xml файле (id)
   private int id = Integer.MAX_VALUE;
+  @Expose
+  //Поля с аннотацией НЕ пропускаются при генерации json-файла
   private String name;
+  @Expose
   private String header;
+  @Expose
   private String footer;
 
   public int getId() {
