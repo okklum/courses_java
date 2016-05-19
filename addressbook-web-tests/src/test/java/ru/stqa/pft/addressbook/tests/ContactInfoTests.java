@@ -27,7 +27,7 @@ public class ContactInfoTests extends TestBase {
                       .withFirstname("Vasya").withLastname("Pupkin").withHomePhone("123-45-67")
                       .withMobilePhone("+7(900)1234567").withWorkPhone("435 321 34 56").withEmail("vasya@mail.ru")
                       .withEmail2("vasya-work@mail.ru").withEmail3("vasya3@ya.ru").withAddress("Советский союз")
-                      .withGroup("test1"),true);
+                      .withGroup("test1"));
     }
   }
 

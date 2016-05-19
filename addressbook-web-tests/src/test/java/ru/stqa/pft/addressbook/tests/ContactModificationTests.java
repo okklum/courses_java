@@ -22,7 +22,7 @@ public class ContactModificationTests extends TestBase {
       app.contact().create
               (new ContactData()
                       .withFirstname("Vasya").withLastname("Pupkin").withMobilePhone("+79001234567")
-                      .withGroup("test1"),true);
+                      .withGroup("test1"));
     }
   }
 

@@ -78,11 +78,11 @@ public class ContactHelper extends HelperBase {
     click(By.name("update"));
   }
 
-  public void create(ContactData contact, boolean b) {
+  public void create(ContactData contact) {
     initContactCreation();
     /* оставляем поле e-mail заполненным по умолчанию
      * добавляем имя группы для выбора из списка групп при создании контакта */
-    fillContactForm(contact, b);
+    fillContactForm(contact, true);
     submitContactCreation();
     contactCache = null;
     /* Требуется возврат на страницу контактов = главную, чтобы тест нашел нужный локатор.*/
