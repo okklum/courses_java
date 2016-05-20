@@ -11,7 +11,9 @@ import ru.stqa.pft.addressbook.appmanager.ApplicationManager;
 public class TestBase {
 
   //объявляем переменную статической, чтобы избавиться от создания ее копий для разных тестовых классов
-  protected static final ApplicationManager app = new ApplicationManager(BrowserType.FIREFOX);
+  //Set param for "browser" in edit configuration, else BrowserType as default
+  protected static final ApplicationManager app
+          = new ApplicationManager(System.getProperty("browser", BrowserType.CHROME));
 
   //Смена аннотации с Test на Suite, чтобы метод запускался один раз для всего тестового набора
   @BeforeSuite
