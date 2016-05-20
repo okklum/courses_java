@@ -92,7 +92,6 @@ public class GroupHelper extends HelperBase {
       return new GroupSuite(groupCache);
     }
     groupCache = new GroupSuite();
-    /* Извлекаем данные со страницы веб-приложения*/
     List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
     //Получаем список объектов типа WebElement, из каждого извлекаем текст = имя группы
     for (WebElement element : elements) {
