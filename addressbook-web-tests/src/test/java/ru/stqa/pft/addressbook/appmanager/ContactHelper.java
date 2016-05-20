@@ -35,7 +35,8 @@ public class ContactHelper extends HelperBase {
 
     if (creation) {
       //в форме создания контакта дропдаун выбора группы должен быть
-      new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
+      //new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
+      Assert.assertTrue(isElementPresent(By.name("new_group")));
     } else {
       //в форме модификации элемента быть не должно
       Assert.assertFalse(isElementPresent(By.name("new_group")));
@@ -133,7 +134,7 @@ public class ContactHelper extends HelperBase {
       contactCache.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname)
               .withAllPhones(allPhones).withAllEMailes(allEmails).withAddress(address));
     }
-    return contactCache;
+    return new ContactSuite(contactCache);
   }
 
   public ContactData infoEditForm(ContactData contact) {

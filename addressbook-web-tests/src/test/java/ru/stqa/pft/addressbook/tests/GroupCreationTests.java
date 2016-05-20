@@ -20,39 +20,41 @@ public class GroupCreationTests extends TestBase {
 
   @DataProvider
   public Iterator<Object[]> readyGroupsFromXML() throws IOException {
-    //Оборачиваем FileReader в метод BufferedReader, т.к. он умеет читать строки (.readLine)
-    BufferedReader reader = new BufferedReader(new FileReader
-            (new File("src/test/resources/groups.xml")));
-    String xml = "";
-    String line = reader.readLine();
-    while (line != null) {
-      //читаем все данные по строчкам
-      xml += line;
-      line = reader.readLine();
+    //FileReader in BufferedReader for use his metod (.readLine);   try ~ writer.close();
+    try (BufferedReader reader = new BufferedReader(new FileReader
+            (new File("src/test/resources/groups.xml")))) {
+      String xml = "";
+      String line = reader.readLine();
+      while (line != null) {
+        //читаем все данные по строчкам
+        xml += line;
+        line = reader.readLine();
+      }
+      XStream xStream = new XStream();
+      xStream.processAnnotations(GroupData.class);
+      //Приведение типа, метод возвращает не хз что, а список объектов типа групдата
+      List<GroupData> groups = (List<GroupData>) xStream.fromXML(xml);
+      //магия: превращаем список объектов в массивы с 1 объектом, преобразуем в список, забираем
+      return groups.stream().map((g) -> new Object[] {g}).collect(Collectors.toList()).iterator();
     }
-    XStream xStream = new XStream();
-    xStream.processAnnotations(GroupData.class);
-    //Приведение типа, метод возвращает не хз что, а список объектов типа групдата
-    List<GroupData> groups = (List<GroupData>) xStream.fromXML(xml);
-    //магия: превращаем список объектов в массивы с 1 объектом, преобразуем в список, забираем
-    return groups.stream().map((g) -> new Object[] {g}).collect(Collectors.toList()).iterator();
   }
 
   @DataProvider
   public Iterator<Object[]> readyGroupsFromJSON() throws IOException {
-    BufferedReader reader = new BufferedReader(new FileReader
-            (new File("src/test/resources/groups.json")));
-    String json = "";
-    String line = reader.readLine();
-    while (line != null) {
-      //читаем все данные по строчкам
-      json += line;
-      line = reader.readLine();
+    try (BufferedReader reader = new BufferedReader(new FileReader
+            (new File("src/test/resources/groups.json")))) {
+      String json = "";
+      String line = reader.readLine();
+      while (line != null) {
+        //читаем все данные по строчкам
+        json += line;
+        line = reader.readLine();
+      }
+      Gson gson = new Gson();
+      List<GroupData> groups = gson.fromJson(json, new TypeToken<List<GroupData>>(){}.getType()); //List<GroupData>.class
+      //магия: превращаем список объектов в массивы с 1 объектом, преобразуем в список, забираем
+      return groups.stream().map((g) -> new Object[] {g}).collect(Collectors.toList()).iterator();
     }
-    Gson gson = new Gson();
-    List<GroupData> groups = gson.fromJson(json, new TypeToken<List<GroupData>>(){}.getType()); //List<GroupData>.class
-    //магия: превращаем список объектов в массивы с 1 объектом, преобразуем в список, забираем
-    return groups.stream().map((g) -> new Object[] {g}).collect(Collectors.toList()).iterator();
   }
 
   @Test(dataProvider = "readyGroupsFromJSON")

@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
-@XStreamAlias("group")
+@XStreamAlias("groups")
 
 public class GroupData {
   @XStreamOmitField
