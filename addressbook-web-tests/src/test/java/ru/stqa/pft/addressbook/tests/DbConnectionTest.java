@@ -16,7 +16,7 @@ import java.sql.*;
     public void testDbConnection() {
       Connection conn = null;
       try {
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/addressbook?user=root&password=");
+        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/addressbook?useSSL=false&serverTimezone=UTC&user=root&password=");
         // Do something with the Connection
         Statement st = conn.createStatement();
         ResultSet rs = st.executeQuery("select group_id,group_name,group_header,group_footer from group_list");
