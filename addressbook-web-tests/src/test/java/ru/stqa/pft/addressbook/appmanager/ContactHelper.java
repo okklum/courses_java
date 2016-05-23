@@ -125,12 +125,12 @@ public class ContactHelper extends HelperBase {
     List<WebElement> elements = wd.findElements(By.cssSelector("tr[name='entry']"));
     for (WebElement element : elements) {
       //преобразовываем String id в int id
-      int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
-      String lastname = element.findElement(By.xpath("./td[2]")).getText();
-      String firstname = element.findElement(By.xpath("./td[3]")).getText();
-      String allPhones = element.findElement(By.xpath("./td[6]")).getText();
-      String allEmails = element.findElement(By.xpath("./td[5]")).getText();
-      String address = element.findElement(By.xpath("./td[4]")).getText();
+      int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
+      String lastname = element.findElement(By.xpath(".//td[2]")).getText();
+      String firstname = element.findElement(By.xpath(".//td[3]")).getText();
+      String allPhones = element.findElement(By.xpath(".//td[6]")).getText();
+      String allEmails = element.findElement(By.xpath(".//td[5]")).getText();
+      String address = element.findElement(By.xpath(".//td[4]")).getText();
       contactCache.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname)
               .withAllPhones(allPhones).withAllEMailes(allEmails).withAddress(address));
     }
@@ -155,13 +155,6 @@ public class ContactHelper extends HelperBase {
             .withEmail(email).withEmail2(email2).withEmail3(email3).withAddress(address);
   }
 
-  /* данных нет, т.к. в методе all не определена переменная allData
-   public ContactData infoCardForm(ContactData contact) {
-    readContactCardById(contact.getId());
-    String contactCardInfo = wd.findElement(By.xpath("//div[@id='content']")).getText();
-    wd.navigate().back();
-    return new ContactData().withAllData(contactCardInfo);
-  }*/
 
   public String infoCardForm(ContactData contact) {
     readContactCardById(contact.getId());

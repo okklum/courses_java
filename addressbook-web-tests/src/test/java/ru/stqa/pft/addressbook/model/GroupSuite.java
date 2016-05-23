@@ -2,7 +2,9 @@ package ru.stqa.pft.addressbook.model;
 
 import com.google.common.collect.ForwardingSet;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -26,6 +28,12 @@ public class GroupSuite extends ForwardingSet<GroupData> {
   public GroupSuite() {
     this.delegateOb = new HashSet<>();
   }
+
+  //конструктор по произв. коллекции строит объект типа groups(исп-ся в DbHelper)
+  public GroupSuite(Collection<GroupData> groupSuite) {
+    this.delegateOb = new HashSet<GroupData>(groupSuite);
+  }
+
 
   @Override
   //обязательный для декоратора метод delegateOb

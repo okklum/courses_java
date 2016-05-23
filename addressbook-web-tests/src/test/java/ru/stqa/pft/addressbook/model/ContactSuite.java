@@ -2,6 +2,7 @@ package ru.stqa.pft.addressbook.model;
 
 import com.google.common.collect.ForwardingSet;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,11 +14,16 @@ public class ContactSuite extends ForwardingSet<ContactData> {
   private Set<ContactData> delegateOb;
 
   public ContactSuite(ContactSuite contactSuite) {
-    this.delegateOb = new HashSet<>(contactSuite.delegate());
+    this.delegateOb = new HashSet<>(contactSuite);
   }
 
   public ContactSuite() {
     this.delegateOb = new HashSet<>();
+  }
+
+  //конструктор по произв. коллекции строит объект типа groups(исп-ся в DbHelper)
+  public ContactSuite(Collection<ContactData> contactSuite) {
+    this.delegateOb = new HashSet<ContactData>(contactSuite);
   }
 
   @Override

@@ -61,12 +61,11 @@ public class GroupCreationTests extends TestBase {
 
   @Test(dataProvider = "readyGroupsFromJSON")
   public void testGroupCreation(GroupData group) {
+    GroupSuite before = app.db().groups();
     app.goTo().groupPage();
-    /*переменные before и after теперь содержат не количество, а список эл-тов*/
-    GroupSuite before = app.group().all();
     app.group().create(group);
     assertThat(app.group().counter(), equalTo(before.size() + 1));
-    GroupSuite after = app.group().all();
+    GroupSuite after = app.db().groups();
     /* присваиваем max id: превращаем коллекцию в поток id(чисел) с пом. ф-ции mapToInt (преобразует
     объект в число, а метод getAsInt преобразует рез-т в целое число)  */
     assertThat(after, equalTo
@@ -75,13 +74,13 @@ public class GroupCreationTests extends TestBase {
 
   @Test
   public void testBadGroupCreation() {
+    GroupSuite before = app.db().groups();
     app.goTo().groupPage();
-    GroupSuite before = app.group().all();
     GroupData group = new GroupData().withName("test21'");
     app.group().create(group);
     //добавляем быстрое сравнение размера перед медленной загрузкой и сравнением всех объектов
     assertThat(app.group().counter(), equalTo(before.size()));
-    GroupSuite after = app.group().all();
+    GroupSuite after = app.db().groups();
     assertThat(after, equalTo(before));
   }
 

@@ -1,54 +1,48 @@
-package ru.stqa.pft.addressbook.tests;
+package ru.stqa.pft.addressbook.appmanager;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
+import ru.stqa.pft.addressbook.model.ContactSuite;
 import ru.stqa.pft.addressbook.model.GroupData;
+import ru.stqa.pft.addressbook.model.GroupSuite;
 
 import java.util.List;
 
 /**
- * Created by alisa on 22.05.2016.
+ * Created by alisa on 23.05.2016.
  */
-public class HbConnectionTest {
+public class DbHelper {
 
-  private SessionFactory sessionFactory;
+  private final SessionFactory sessionFactory;
 
-  @BeforeClass
-  protected void setUp() throws Exception {
+  public DbHelper() {
     // A SessionFactory is set up once for an application!
     final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
             .configure() // configures settings from hibernate.cfg.xml
             .build();
-    try {
-      sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
-    }
-    catch (Exception e) {
-      //Show error
-      e.printStackTrace();
-      // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
-      // so destroy it manually.
-      StandardServiceRegistryBuilder.destroy( registry );
-    }
+    sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
   }
 
+  public GroupSuite groups() {
+    Session session = sessionFactory.openSession();
+    session.beginTransaction();
+    List<GroupData> result = session.createQuery("from GroupData").list();
+    session.getTransaction().commit();
+    session.close();
+    return new GroupSuite(result);
+  }
 
-  @Test
-  public void testHbConnection() {
+  public ContactSuite contacts() {
     Session session = sessionFactory.openSession();
     session.beginTransaction();
     //deprecated = '0000-00-00' - don`t delete contacts
     List<ContactData> result = session.createQuery("from ContactData where deprecated = '0000-00-00'").list();
-    for (ContactData contact : result) {
-      System.out.println(contact);
-    }
     session.getTransaction().commit();
     session.close();
+    return new ContactSuite(result);
   }
 }
