@@ -1,7 +1,6 @@
 <configuration>
 
-    <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
-
+    <timestamp key="bySecond" datePattern="MMdd'_T_'HHmmss"/>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>logs/addressbook-web-tests/test-${bySecond}.log</file>

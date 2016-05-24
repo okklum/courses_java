@@ -70,6 +70,7 @@ public class GroupCreationTests extends TestBase {
     объект в число, а метод getAsInt преобразует рез-т в целое число)  */
     assertThat(after, equalTo
             (before.withAdded(group.withId(after.stream().mapToInt((g) ->g.getId()).max().getAsInt()))));
+    verifyGroupListInUI();
   }
 
   @Test

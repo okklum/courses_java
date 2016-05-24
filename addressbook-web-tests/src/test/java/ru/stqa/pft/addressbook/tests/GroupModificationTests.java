@@ -39,6 +39,7 @@ public class GroupModificationTests extends TestBase {
     assertThat(app.group().counter(),equalTo(before.size())); //хеширование невыгодно, но это контроль гуи
     GroupSuite after = app.db().groups();
     assertThat(after, equalTo(before.without(modifiedGroup).withAdded(group)));
+    verifyGroupListInUI();
   }
 
 }

@@ -72,7 +72,7 @@ public class ContactHelper extends HelperBase {
   //немного отредактировала подсказку Алексея из общего чата
   public void initModifyContactById(int id) {
     WebElement checkbox = wd.findElement(By.id("" + id));
-    checkbox.findElement(By.xpath("//*[@id='maintable']//td[8]/a")).click();
+    checkbox.findElement(By.xpath("./../../td[8]/a")).click();
   }
 
   public void submitContactModification() {
@@ -126,11 +126,11 @@ public class ContactHelper extends HelperBase {
     for (WebElement element : elements) {
       //преобразовываем String id в int id
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
-      String lastname = element.findElement(By.xpath(".//td[2]")).getText();
-      String firstname = element.findElement(By.xpath(".//td[3]")).getText();
-      String allPhones = element.findElement(By.xpath(".//td[6]")).getText();
-      String allEmails = element.findElement(By.xpath(".//td[5]")).getText();
-      String address = element.findElement(By.xpath(".//td[4]")).getText();
+      String lastname = element.findElement(By.xpath("./td[2]")).getText();
+      String firstname = element.findElement(By.xpath("./td[3]")).getText();
+      String allPhones = element.findElement(By.xpath("./td[6]")).getText();
+      String allEmails = element.findElement(By.xpath("./td[5]")).getText();
+      String address = element.findElement(By.xpath("./td[4]")).getText();
       contactCache.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname)
               .withAllPhones(allPhones).withAllEMailes(allEmails).withAddress(address));
     }

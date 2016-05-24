@@ -33,6 +33,7 @@ public class ContactDeletionTests extends TestBase {
     assertThat(app.contact().counter(),equalTo(before.size() - 1));
     ContactSuite after = app.db().contacts();
     assertThat(after, equalTo(before.without(deletedContact)));
+    verifyContactListInUI();
   }
 
 }
