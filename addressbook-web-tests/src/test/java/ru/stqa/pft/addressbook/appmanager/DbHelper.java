@@ -1,5 +1,6 @@
 package ru.stqa.pft.addressbook.appmanager;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -39,10 +40,24 @@ public class DbHelper {
   public ContactSuite contacts() {
     Session session = sessionFactory.openSession();
     session.beginTransaction();
-    //deprecated = '0000-00-00' - don`t delete contacts
+    //deprecated = '0000-00-00' - don`t deleted contacts
+    // 'from contactdata' - object instead table
     List<ContactData> result = session.createQuery("from ContactData where deprecated = '0000-00-00'").list();
     session.getTransaction().commit();
     session.close();
     return new ContactSuite(result);
+  }
+
+  public ContactData oneContact(int id) {
+    Session session = sessionFactory.openSession();
+    session.beginTransaction();
+    /*ContactData thisContact = session.createQuery(String.
+            format("from ContactData where deprecated = '0000-00-00' and id ='%s'", id))
+            .list();*/
+    Query thisContact = session.createQuery("from ContactData where deprecated = '0000-00-00' and id = :id");
+    thisContact.setParameter("id", id);
+    session.getTransaction().commit();
+    session.close();
+    return (ContactData) thisContact.uniqueResult();
   }
 }

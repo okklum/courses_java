@@ -26,8 +26,7 @@ public class ContactInfoTests extends TestBase {
               (new ContactData()
                       .withFirstname("Vasya").withLastname("Pupkin").withHomePhone("123-45-67")
                       .withMobilePhone("+7(900)1234567").withWorkPhone("435 321 34 56").withEmail("vasya@mail.ru")
-                      .withEmail2("vasya-work@mail.ru").withEmail3("vasya3@ya.ru").withAddress("Советский союз")
-                      .withGroup("test1"));
+                      .withEmail2("vasya-work@mail.ru").withEmail3("vasya3@ya.ru").withAddress("Советский союз"));
     }
   }
 
@@ -72,8 +71,9 @@ public class ContactInfoTests extends TestBase {
     String allEmails = Arrays.asList(email, email2, email3).stream().
             filter((s) -> !s.equals("")).collect(Collectors.joining("\n"));
 
-    String group = Arrays.asList("Member of:" + contact.getGroup()).stream().filter((s) -> !s.equals(""))
-            .map(ContactInfoTests::cleanedNull).collect(Collectors.joining("\n"));
+    String group = "";
+            /*Arrays.asList("Member of:" + contact.getGroup()).stream().filter((s) -> !s.equals(""))
+            .map(ContactInfoTests::cleanedNull).collect(Collectors.joining("\n"));*/
 
     String allData = names + "\n" + address + "\n" + "\n" + allPhones + "\n" + "\n" + allEmails
             + "\n"+ "\n" + "\n" + group + "\n";

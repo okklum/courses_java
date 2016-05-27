@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.ContactSuite;
 import ru.stqa.pft.addressbook.model.GroupData;
+import ru.stqa.pft.addressbook.model.GroupSuite;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -65,18 +66,19 @@ public class ContactCreationTests extends TestBase {
     assertThat(app.contact().counter(),equalTo(before.size() + 1));
     ContactSuite after = app.db().contacts();
      assertThat(after, equalTo
-            (before.withAdded(contact.withId(after.stream().mapToInt(c -> c.getId()).max().getAsInt()))));
+            (before.withAdded(contact.withId(after.stream().mapToInt(ContactData::getId).max().getAsInt()))));
     verifyContactListInUI();
   }
 
   @Test(enabled = false)
   public void testBadContactCreation() {
     ContactSuite before = app.db().contacts();
+    GroupSuite groups = app.db().groups();
+    ContactData newContact = new ContactData()
+            .withFirstname("'Vasya'").withLastname("Pupkin").withMobilePhone("+79001234666")
+            .withEmail("e@mail.ru").inGroup(groups.iterator().next());
     app.goTo().homePage();
-    ContactData contact = new ContactData()
-            .withFirstname("'Vasya'").withLastname("Pupkin").withMobilePhone("+79001234569")
-            .withGroup("test1");
-    app.contact().create(contact);
+    app.contact().create(newContact);
     assertThat(app.contact().counter(),equalTo(before.size()));
     ContactSuite after = app.db().contacts();
     assertThat(after, equalTo(before));

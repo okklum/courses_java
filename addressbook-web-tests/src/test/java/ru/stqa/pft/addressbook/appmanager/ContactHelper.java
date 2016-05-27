@@ -7,8 +7,12 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.ContactSuite;
+import ru.stqa.pft.addressbook.model.GroupData;
+import ru.stqa.pft.addressbook.model.GroupSuite;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by alisa on 21.04.2016.
@@ -81,8 +85,7 @@ public class ContactHelper extends HelperBase {
 
   public void create(ContactData contact) {
     initContactCreation();
-    /* оставляем поле e-mail заполненным по умолчанию
-     * добавляем имя группы для выбора из списка групп при создании контакта */
+     /* добавляем имя группы для выбора из списка групп при создании контакта */
     fillContactForm(contact, true);
     submitContactCreation();
     contactCache = null;
@@ -167,4 +170,15 @@ public class ContactHelper extends HelperBase {
     WebElement checkbox = wd.findElement(By.id("" + id));
     checkbox.findElement(By.xpath("//*[@id='maintable']//td[7]/a")).click();
   }
+
+  public void addContactToGroup() {
+    click(By.name("add"));
+  }
+
+  public void selectThisGroup(GroupData thisGroup) {
+    //подсказка из общего чата
+    new Select(wd.findElement(By.name("to_group"))).selectByVisibleText(thisGroup.getName());
+  }
+
 }
+

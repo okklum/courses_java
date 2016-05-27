@@ -7,6 +7,9 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.File;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @XStreamAlias("contacts")
 @Entity //Annotation for using object by hibernate
@@ -17,12 +20,15 @@ public class ContactData {
   @Id
   @Column(name = "id") //the name don`t need hibernate for same fields (fieldname "id" yet in DB)
   private int id = Integer.MAX_VALUE;
+
   @Expose
   @Column
   private String firstname;
+
   @Expose
   @Column
   private String lastname;
+
   @Expose
   @Column(name = "home")
   @Type(type = "text") //for hibernate
@@ -35,34 +41,42 @@ public class ContactData {
   @Column(name = "work")
   @Type(type = "text")
   private String workPhone = "";
+
   @Expose
   @Transient  //dont use this data from SQL by hibernate
   private String allPhones;
+
   @Expose
   @Column
   @Type(type = "text")
   private String email = "";
-  @Expose
+    @Expose
   @Column
   @Type(type = "text")
   private String email2 = "";
-  @Expose
+    @Expose
   @Column
   @Type(type = "text")
   private String email3 = "";
+
   @Expose
   @Transient
   private String allEMailes;
-  @Expose
-  @Transient
-  private String group;
+
   @Expose
   @Column
   @Type(type = "text")
   private String address = "";
-  @Column(name = "photo")
-  @Type(type = "text")
+
+  @Transient
+  //@Column(name = "photo")
+  //@Type(type = "text")
   private String photo = "";
+
+  @ManyToMany
+  @JoinTable(name = "address_in_groups",
+          joinColumns = @JoinColumn(name = "id"),inverseJoinColumns = @JoinColumn(name = "group_id"))
+  private Set<GroupData> groups = new HashSet<GroupData>();
 
 
   public int getId() {
@@ -129,16 +143,18 @@ public class ContactData {
     return this;
   }
 
-  public ContactData withGroup(String group) {
-    this.group = group;
-    return this;
-  }
-
   public ContactData withPhoto(File photo) {
     this.photo = photo.getPath();
     return this;
   }
 
+  /*public Set<GroupData> getGroups() {
+    return groups;
+  }*/
+  //превращаем созданные по дефолту из параметра множества в объект данного типа
+  public GroupSuite getGroups() {
+    return new GroupSuite(groups);
+  }
 
   public String getFirstname() {
     return firstname;
@@ -185,9 +201,6 @@ public class ContactData {
     return address;
   }
 
-  public String getGroup() {
-    return group;
-  }
 
   public File getPhoto() {
     if (photo == null){
@@ -246,10 +259,13 @@ public class ContactData {
             ", email2='" + email2 + '\'' +
             ", email3='" + email3 + '\'' +
             ", allEMailes='" + allEMailes + '\'' +
-            ", group='" + group + '\'' +
             ", address='" + address + '\'' +
             ", photo='" + photo + '\'' +
             '}';
   }
 
+  public ContactData inGroup(GroupData group) {
+    groups.add(group);
+    return this;
+  }
 }
