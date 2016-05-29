@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.ContactSuite;
 import ru.stqa.pft.addressbook.model.GroupData;
@@ -18,7 +19,9 @@ import java.util.List;
  */
 public class DbHelper {
 
-  private final SessionFactory sessionFactory;
+  //private final SessionFactory sessionFactory;
+  //потерялся файл конфига, нагуглила решение
+  SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
   public DbHelper() {
     // A SessionFactory is set up once for an application!
@@ -44,7 +47,7 @@ public class DbHelper {
     // 'from contactdata' - object instead table
     List<ContactData> result = session.createQuery("from ContactData where deprecated = '0000-00-00'").list();
     session.getTransaction().commit();
-    session.close();
+    session.disconnect();
     return new ContactSuite(result);
   }
 
@@ -54,10 +57,10 @@ public class DbHelper {
     /*ContactData thisContact = session.createQuery(String.
             format("from ContactData where deprecated = '0000-00-00' and id ='%s'", id))
             .list();*/
-    Query thisContact = session.createQuery("from ContactData where deprecated = '0000-00-00' and id = :id");
-    thisContact.setParameter("id", id);
+    Query query = session.createQuery("from ContactData where deprecated = '0000-00-00' and id = :id");
+    query.setParameter("id", id);
     session.getTransaction().commit();
-    session.close();
-    return (ContactData) thisContact.uniqueResult();
+    session.disconnect();
+    return (ContactData) query.uniqueResult();
   }
 }

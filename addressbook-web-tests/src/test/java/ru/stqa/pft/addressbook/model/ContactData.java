@@ -73,7 +73,7 @@ public class ContactData {
   //@Type(type = "text")
   private String photo = "";
 
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.EAGER)//из БД извлекается вся возможная инфа, жадный запрос
   @JoinTable(name = "address_in_groups",
           joinColumns = @JoinColumn(name = "id"),inverseJoinColumns = @JoinColumn(name = "group_id"))
   private Set<GroupData> groups = new HashSet<GroupData>();

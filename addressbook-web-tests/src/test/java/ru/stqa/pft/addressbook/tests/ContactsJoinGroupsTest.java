@@ -1,12 +1,8 @@
 package ru.stqa.pft.addressbook.tests;
 
-/*Группы сортируются по алфавиту и добавляется первая в списке. Можно создать группу с именем типа
-* '00000000-timestamp', также она будет обладать максимальным id (отбор по значению с пом. max)
-* или нужно как-то доставать id контакта и группы и проверять, что для данного контакта возвращается эта группа
-* */
-
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
@@ -17,7 +13,9 @@ import ru.stqa.pft.addressbook.model.GroupSuite;
 import java.sql.Date;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 
 
 /**
@@ -27,11 +25,8 @@ public class ContactsJoinGroupsTest extends TestBase {
 
 
   @BeforeClass
-  public void checkGroups() {
+  public void checkData() {
 
-    if (app.db().groups().size() > 0) { //проверка не работает
-      app.db().groups().clear();
-    }
     if (app.db().groups().size() ==0) {
       app.goTo().groupPage();
       //Создаем уникальную группу: currentTimeMillis почему-то записал только дату, нагуглила др. метод
@@ -42,11 +37,6 @@ public class ContactsJoinGroupsTest extends TestBase {
       app.contact().create(new ContactData().withFirstname("Vasya").withLastname("Ivanov"));
     }
     //Создать метод для проверки связи выбранного контакта с группой
-  }
-
-  @Test(enabled = false)
-  public void checkDate(){
-    System.out.println(new Date(System.nanoTime()));
   }
 
   @Test
@@ -65,9 +55,7 @@ public class ContactsJoinGroupsTest extends TestBase {
     app.goTo().homePage();
     ContactData dbContact = app.db().oneContact(thisContact.getId());
 
-    /*нужна замена сравения на вхождение
-    assertThat(dbContact.getGroups(), equalTo(thisContact.getGroups()));*/
-
+    assertThat(dbContact.getGroups(), contains(thisGroup));
   }
 
   @Test(enabled = false)
