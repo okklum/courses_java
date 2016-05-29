@@ -20,7 +20,6 @@ public class ApplicationManager {
 
   private String browser;
 
-
   public ApplicationManager(String browser) {
     this.browser = browser;
     properties = new Properties();
@@ -40,12 +39,19 @@ public class ApplicationManager {
       wd = new InternetExplorerDriver();
     }
 
-    wd.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
+    wd.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
     wd.get(properties.getProperty("web.baseUrl"));
   }
 
-
   public void stop() {
     wd.quit();
+  }
+
+  public HttpSession newSession() {
+    return new HttpSession(this);
+  }
+
+  public String getProperty(String key) {
+    return properties.getProperty(key);
   }
 }
