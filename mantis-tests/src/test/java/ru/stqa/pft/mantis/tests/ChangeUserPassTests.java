@@ -35,11 +35,9 @@ public class ChangeUserPassTests extends TestBase{
     //получаем письма
     List<MailMessage> mailMessages = app.mail().waitForMail(1, 10000);
     String changePassLink = findChangePassLink(mailMessages, modifiedUser);
-    //app.registration().setNewPass(changePassLink, newpassword);
-    app.registration().finish(changePassLink,newpassword);
+    app.registration().finish(changePassLink,newpassword); //удалила дублирующий метод setNewPass
+    //app.registration().login(modifiedUser.getUsername(),newpassword); //визуальный контроль, нннада)
     assertTrue(app.newSession().httpLogin(modifiedUser.getUsername(),newpassword));
-
-
   }
 
   private String findChangePassLink(List<MailMessage> mailMessages, UserData modifiedUser) {

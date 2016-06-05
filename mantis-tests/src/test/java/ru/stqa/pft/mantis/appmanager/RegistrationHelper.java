@@ -21,6 +21,7 @@ public class RegistrationHelper extends HelperBase {
     click(By.cssSelector("input[value='Signup']"));
   }
 
+  //метод для завершения регистрации или смены пароля
   public void finish(String confirmationLink, String password) {
     wd.get(confirmationLink);
     type(By.name("password"), password);
@@ -47,10 +48,4 @@ public class RegistrationHelper extends HelperBase {
     click(By.xpath("//input[@value='Reset Password']"));
   }
 
-  public void setNewPass(String changePassLink, String password) {
-    wd.get(changePassLink);
-    type(By.name("password"), password);
-    type(By.name("password_confirm"), password);
-    click(By.cssSelector("input[value='Update User']"));
-  }
 }
