@@ -31,13 +31,9 @@ public class UserData {
   @Column
   private String password;
 
-  @Column
-  @Type(type = "short")
-  private int access_level;
-
-  public UserData(List<UserData> result) {
-  }
-
+  /*@Column
+  @Type(type = "integer")
+  private int access_level;*/
   //Getters
   public int getId() {
     return id;
@@ -55,9 +51,9 @@ public class UserData {
     return password;
   }
 
-  public int getAccess_level() {
+  /*public int getAccess_level() {
     return access_level;
-  }
+  }*/
 
   //Setters
   public UserData withId(int id) {
@@ -80,9 +76,9 @@ public class UserData {
     return this;
   }
 
-  public UserData withAccess_level(int access_level) {
+  /*public UserData withAccess_level(int access_level) {
     this.access_level = access_level;
     return this;
-  }
+  }*/
 
 }

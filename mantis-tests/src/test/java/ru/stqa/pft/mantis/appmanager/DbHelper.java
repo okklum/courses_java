@@ -31,7 +31,8 @@ public class DbHelper {
   public UserSuite usersNoAdmin() {
     Session session = sessionFactory.openSession();
     session.beginTransaction();
-    List<UserData> result = session.createQuery("from UserData where access_level!= '90'").list(); //no admin
+    //List<UserData> result = session.createQuery("from UserData where access_level != '90'").list(); //no admin
+    List<UserData> result = session.createQuery("from UserData where username != 'administrator'").list(); //no admin
     session.getTransaction().commit();
     session.close();
     return new UserSuite(result);

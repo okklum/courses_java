@@ -28,8 +28,8 @@ public class RegistrationHelper extends HelperBase {
     click(By.cssSelector("input[value='Update User']"));
   }
 
-  public void loginAsAdmin(String username, String password) {
-    wd.get(app.getProperty("web.baseUrl") + "/login.php");
+  public void login(String username, String password) {
+    wd.get(app.getProperty("web.baseUrl") + "/login_page.php");
     type(By.name("username"), username);
     type(By.name("password"), password);
     click(By.cssSelector("input[value='Login']"));
@@ -44,6 +44,13 @@ public class RegistrationHelper extends HelperBase {
     new WebDriverWait(wd,5).until(ExpectedConditions.elementToBeClickable(By.linkText("Manage Users")));
     click(By.linkText("Manage Users"));
     click(By.linkText(user.getUsername()));
-    click(By.linkText("Reset Password"));
+    click(By.xpath("//input[@value='Reset Password']"));
+  }
+
+  public void setNewPass(String changePassLink, String password) {
+    wd.get(changePassLink);
+    type(By.name("password"), password);
+    type(By.name("password_confirm"), password);
+    click(By.cssSelector("input[value='Update User']"));
   }
 }
