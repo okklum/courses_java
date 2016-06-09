@@ -40,7 +40,7 @@ public class SoapHelper {
      /*return Arrays.asList(issueDatas).stream().map((i) -> new Issue().withId(i.getId().intValue())
             .withStatus(i.getStatus().toString())).collect(Collectors.toSet());*/
     return Arrays.asList(issueDatas).stream().map((i) -> new Issue().withId(i.getId().intValue())
-            .withStatus(i.getStatus())).collect(Collectors.toSet());
+            .withStatus(i.getStatus()).withResolution(i.getResolution())).collect(Collectors.toSet());
   }
 
   /*public Issue getIssue(int issueId) throws MalformedURLException, ServiceException, RemoteException {

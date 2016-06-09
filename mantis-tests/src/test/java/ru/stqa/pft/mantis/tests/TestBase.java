@@ -35,7 +35,7 @@ public class TestBase {
     MantisConnectPortType mc = new MantisConnectLocator().getMantisConnectPort(new URL(app.getProperty("mc.URL")));
     IssueData issueData = mc.mc_issue_get(app.getProperty("web.adminLogin"),
             app.getProperty("web.adminPassword"), BigInteger.valueOf(issueId));
-    if (issueData.getStatus().toString().equals("open")) {
+    if (issueData.getResolution().getName().equals("open")) {
       return true;
     }
     return false;

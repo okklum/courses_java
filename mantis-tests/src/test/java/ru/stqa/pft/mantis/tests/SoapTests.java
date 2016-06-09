@@ -20,7 +20,8 @@ public class SoapTests extends TestBase{
 
   @Test
   public void testGetProjects() throws MalformedURLException, ServiceException, RemoteException {
-    skipIfNotFixed(0000001); //test
+    //System.out.println(isIssueOpen(1)); //отладка: проверка статуса первого таска
+    skipIfNotFixed(1); //test
     Set<Project> projects = app.soap().getProjects();
     System.out.println(projects.size());
     for (Project project : projects) {
@@ -42,7 +43,7 @@ public class SoapTests extends TestBase{
     Set<Issue> issues = app.soap().getAllIssues(1);
     System.out.println("Всего тасков в системе: " + issues.size());
     for (Issue issue: issues) {
-      System.out.println(issue.getStatus().getName());
+      System.out.println(issue.getResolution().getName());
     }
   }
 

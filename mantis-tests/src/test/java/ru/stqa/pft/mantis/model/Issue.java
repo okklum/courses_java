@@ -14,6 +14,17 @@ public class Issue {
   private Project project;
   private ObjectRef status;
 
+  public ObjectRef getResolution() {
+    return resolution;
+  }
+
+  public Issue withResolution(ObjectRef resolution) {
+    this.resolution = resolution;
+    return this;
+  }
+
+  private ObjectRef resolution;
+
 
   public int getId() {
     return id;
