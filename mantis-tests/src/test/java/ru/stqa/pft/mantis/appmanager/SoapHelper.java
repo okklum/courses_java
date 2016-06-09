@@ -32,6 +32,17 @@ public class SoapHelper {
             .withName(p.getName())).collect(Collectors.toSet());
   }
 
+  public Set<Issue> getAllIssues(int projectId) throws MalformedURLException, ServiceException, RemoteException {
+    MantisConnectPortType mc = getMantisConnect();
+    IssueData[] issueDatas = mc.mc_project_get_issues(app.getProperty("web.adminLogin"),
+            app.getProperty("web.adminPassword"), BigInteger.valueOf(projectId), BigInteger.valueOf(1)
+            , BigInteger.valueOf(100));
+     /*return Arrays.asList(issueDatas).stream().map((i) -> new Issue().withId(i.getId().intValue())
+            .withStatus(i.getStatus().toString())).collect(Collectors.toSet());*/
+    return Arrays.asList(issueDatas).stream().map((i) -> new Issue().withId(i.getId().intValue())
+            .withStatus(i.getStatus())).collect(Collectors.toSet());
+  }
+
   /*public Issue getIssue(int issueId) throws MalformedURLException, ServiceException, RemoteException {
     MantisConnectPortType mc = getMantisConnect();
     IssueData issueData = mc.mc_issue_get(app.getProperty("web.adminLogin"),
