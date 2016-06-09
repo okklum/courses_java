@@ -32,14 +32,25 @@ public class SoapHelper {
             .withName(p.getName())).collect(Collectors.toSet());
   }
 
+  /*public Issue getIssue(int issueId) throws MalformedURLException, ServiceException, RemoteException {
+    MantisConnectPortType mc = getMantisConnect();
+    IssueData issueData = mc.mc_issue_get(app.getProperty("web.adminLogin"),
+            app.getProperty("web.adminPassword"), BigInteger.valueOf(issueId));
+    /*return new Issue().withId(issueId).withSummary(issueData.getSummary()).withStatus(new Status()
+            .withState(issueData.getStatus().toString())).withDescription(issueData.getDescription())
+            .withProject(new Project().withId(issueData.getProject().getId().intValue())
+                    .withName(issueData.getProject().getName()));
+    return new Issue();
+  }*/
+
   private MantisConnectPortType getMantisConnect() throws ServiceException, MalformedURLException {
     return new MantisConnectLocator()
               .getMantisConnectPort(new URL(app.getProperty("mc.URL")));
   }
 
   public Issue addIssue(Issue issue) throws MalformedURLException, ServiceException, RemoteException {
-    MantisConnectPortType port = getMantisConnect();
-    String[] categories = port.mc_project_get_categories(app.getProperty("web.adminLogin"),
+    MantisConnectPortType mc = getMantisConnect();
+    String[] categories = mc.mc_project_get_categories(app.getProperty("web.adminLogin"),
             app.getProperty("web.adminPassword"),BigInteger.valueOf(issue.getProject().getId()));
     IssueData issueData = new IssueData();
     issueData.setSummary(issue.getSummary());
@@ -47,9 +58,9 @@ public class SoapHelper {
     issueData.setProject(new ObjectRef(BigInteger.valueOf(issue.getProject().getId()), //int -> BigInt
             issue.getProject().getName()));
     issueData.setCategory(categories[0]);
-    BigInteger issueId = port.mc_issue_add(app.getProperty("web.adminLogin"),
+    BigInteger issueId = mc.mc_issue_add(app.getProperty("web.adminLogin"),
             app.getProperty("web.adminPassword"), issueData); // а почему это Id?
-    IssueData createdIssueData = port.mc_issue_get(app.getProperty("web.adminLogin"),
+    IssueData createdIssueData = mc.mc_issue_get(app.getProperty("web.adminLogin"),
             app.getProperty("web.adminPassword"), issueId);
     return new Issue().withId(createdIssueData.getId().intValue())
             .withSummary(createdIssueData.getSummary()).withDescription(createdIssueData.getDescription())
