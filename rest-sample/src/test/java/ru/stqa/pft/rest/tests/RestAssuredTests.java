@@ -1,4 +1,4 @@
-package ru.stqa.pft.rest;
+package ru.stqa.pft.rest.tests;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -10,6 +10,7 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicNameValuePair;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import ru.stqa.pft.rest.ru.stqa.pft.rest.model.Issue;
 
 import java.io.IOException;
 import java.util.Set;
@@ -19,15 +20,19 @@ import static org.testng.Assert.assertEquals;
 /**
  * Created by alisa on 10.06.2016.
  */
-public class RestAssuredTests {
+public class RestAssuredTests extends TestBase {
+
+  public RestAssuredTests() {
+    super(properties);
+  }
 
   //авторизация с пом. rest-assured
   @BeforeClass
-  public void init() {
+  public void init() throws IOException {
     RestAssured.authentication = RestAssured.basic("LSGjeU4yP1X493ud1hNniA==", "");
   }
 
-  @Test
+  @Test (enabled = false)
   public void testCreateIssue() throws IOException {
     Set<Issue> oldIssues = getIssues();
     Issue newIssue = new Issue().withSubject("Test").withDescription("bla-bla");
@@ -37,17 +42,18 @@ public class RestAssuredTests {
     assertEquals(newIssues, oldIssues);
   }
 
-  private Set<Issue> getIssues() throws IOException {
-    //запросы через rest-assured
-    String json = RestAssured.get("http://demo.bugify.com/api/issues.json").asString();
-    JsonElement parsed = new JsonParser().parse(json);
-    JsonElement issues = parsed.getAsJsonObject().get("issues");
-    return new Gson().fromJson(issues, new TypeToken<Set<Issue>>(){}.getType()); //== new Set<Issue>
+  @Test
+  public void testShowLastIssues() throws IOException { //тут же проверка skipIfNotFixed
+    Set<Issue> issues = getIssues();
+    Issue issue = issues.iterator().next();
+    String state = issue.getState();
+    System.out.println("Всего тасков: " + issues.size());
+    int maxId = issues.stream().mapToInt((g) ->g.getId()).max().getAsInt();
+    skipIfNotFixed(maxId); //не выводим на печать check, если таск открыт
+    String check = "Последний таск с id " + maxId + " и кодом статуса "+ state;
+    System.out.println(check);
   }
 
-  private Executor getExecutor() {
-    return Executor.newInstance().auth("LSGjeU4yP1X493ud1hNniA==", "");
-  }
 
   private int createIssue(Issue newIssue) throws IOException {
     String json = RestAssured.given()
@@ -57,4 +63,5 @@ public class RestAssuredTests {
     JsonElement parsed = new JsonParser().parse(json);
     return parsed.getAsJsonObject().get("issue_id").getAsInt();
   }
+
 }

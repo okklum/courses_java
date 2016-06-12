@@ -1,4 +1,4 @@
-package ru.stqa.pft.rest;
+package ru.stqa.pft.rest.tests;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -7,8 +7,8 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicNameValuePair;
-import org.testng.Assert;
 import org.testng.annotations.Test;
+import ru.stqa.pft.rest.ru.stqa.pft.rest.model.Issue;
 
 import java.io.IOException;
 import java.util.Set;
@@ -18,19 +18,23 @@ import static org.testng.Assert.assertEquals;
 /**
  * Created by alisa on 10.06.2016.
  */
-public class RestTests {
+public class RestTests extends TestBase {
+
+  public RestTests() {
+    super(properties);
+  }
 
   @Test
   public void testCreateIssue() throws IOException {
-    Set<Issue> oldIssues = getIssues();
+    Set<Issue> oldIssues = getIssuesWithHttpClient();
     Issue newIssue = new Issue().withSubject("Test").withDescription("bla-bla");
     int issueId = createIssue(newIssue);
-    Set<Issue> newIssues = getIssues();
+    Set<Issue> newIssues = getIssuesWithHttpClient();
     oldIssues.add(newIssue.withId(issueId));
     assertEquals(newIssues, oldIssues);
   }
 
-  private Set<Issue> getIssues() throws IOException {
+  private Set<Issue> getIssuesWithHttpClient() throws IOException {
     //запросы через http-client
     String json = getExecutor().execute(Request.Get("http://demo.bugify.com/api/issues.json"))
             .returnContent().asString();
@@ -38,6 +42,7 @@ public class RestTests {
     JsonElement issues = parsed.getAsJsonObject().get("issues");
     return new Gson().fromJson(issues, new TypeToken<Set<Issue>>(){}.getType()); //== new Set<Issue>
   }
+
 
   //авторизация с пом. http-client
   private Executor getExecutor() {
