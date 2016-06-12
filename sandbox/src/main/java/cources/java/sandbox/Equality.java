@@ -13,12 +13,12 @@ public class Equality {
 
     String s3 = "fire" + "fox";
 
-    //Физическое сравнение: сравниваются ссылки на объект, тут они разные
+    //Fizicheskoe sravnenie: sravnivayutsya ssylki na ob"ekt, tut oni raznye
     System.out.println(s1 == s2);
-    //Логическое сравнение: сравнивается содержимое объектов, одинаковое
+    //Logicheskoe sravnenie: sravnivaetsya soderzhimoe ob"ektov, odinakovoe
     System.out.println(Objects.equals(s1, s2));
 
-    //Ссылки на объекты идентичны,т.к. переменные с одинаковой литеральной строкой ссылаются на 1 физ.объект
+    //Ssylki na ob"ekty identichny,t.k. peremennye s odinakovoj literal'noj strokoj ssylayutsya na 1 fiz.ob"ekt
     System.out.println(s1 == s3);
   }
 

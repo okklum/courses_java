@@ -14,7 +14,7 @@ public class Rectangle {
     this.b = b;
   }
 
-  //Перенос ф-ции в др. класс, убираем static и параметр - ссылка на объект через this
+  //move method in other class, delete "static" & attribut (add "this")
   public double area (){
     return this.a * this.b;
   }

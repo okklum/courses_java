@@ -6,10 +6,8 @@ public class Hello {
     printText(" from the outside");
     System.out.println("Для n = 5 результат " + Primes.isPrime(5) + "; res = " + Primes.res);
 
-    //ДЗ №2: Идея! Переделываем два объекта с двумя атрибутами в один объект с четыремя
     Point p = new Point(2,4,3,7);
 
-    //ДЗ №2: Выводим результат
     System.out.println("Расстояние между точками с координатами " + p.x1 + " , " + p.y1 + " и "
             + p.x2 + " , " + p.y2 + " = " + p.distance());
 

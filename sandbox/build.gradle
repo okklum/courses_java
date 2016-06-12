@@ -10,3 +10,11 @@ dependencies {
     compile 'org.testng:testng:6.9.10'
     compile 'org.postgresql:postgresql:9.4.1208'
 }
+test {
+	useTestNG()
+    systemProperty "file.encoding", "utf-8"
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}

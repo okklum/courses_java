@@ -7,13 +7,13 @@ public class Square {
 
   public int kvadr;
 
-  //Добавляем конструктор (в отличие от класса не имеет возвращаемого значения, но требует параметры)
+  //add constructor
   public Square (int kvadr){
-    //инициализация нового (параметра) объекта в конструкторе = заполнение значениями
+    //init new (parameter) Ob. in constructor: values filling
     this.kvadr = kvadr;
   }
 
-  //Перенос ф-ции в др. класс, убираем static и параметр - ссылка на объект через this
+  //move method in other class, delete "static" & attribut (add "this")
   public int area () {
     return this.kvadr * this.kvadr;
   }
