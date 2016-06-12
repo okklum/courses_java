@@ -4,8 +4,6 @@ public class Hello {
 
   public static void main(String[] args) {
     printText(" from the outside");
-     /* чтобы  определить число 5 в переменную, нужен конструктор?
-     * False в выдаче Primes.res из-за того, что переменная не определена? */
     System.out.println("Для n = 5 результат " + Primes.isPrime(5) + "; res = " + Primes.res);
 
     //ДЗ №2: Идея! Переделываем два объекта с двумя атрибутами в один объект с четыремя
@@ -16,7 +14,6 @@ public class Hello {
             + p.x2 + " , " + p.y2 + " = " + p.distance());
 
 
-    //Создан объект с добавлением нового значения, атрибуты заполнены в конструкторе
     Square s = new Square(5);
     System.out.println("Площадь квадрата со стороной " + s.kvadr + " равна " + s.area ());
 
