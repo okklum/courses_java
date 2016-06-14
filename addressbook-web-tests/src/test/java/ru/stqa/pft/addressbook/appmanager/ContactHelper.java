@@ -176,8 +176,15 @@ public class ContactHelper extends HelperBase {
   }
 
   public void selectThisGroup(GroupData thisGroup) {
-    //подсказка из общего чата
     new Select(wd.findElement(By.name("to_group"))).selectByVisibleText(thisGroup.getName());
+  }
+
+  public void showContactsInGroup(GroupData thisGroup) {
+    new Select(wd.findElement(By.name("group"))).selectByVisibleText(thisGroup.getName());
+  }
+
+  public void deleteContactFromGroup() {
+    click(By.name("remove"));
   }
 
 }

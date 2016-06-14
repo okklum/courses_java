@@ -16,6 +16,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.not;
 
 
 /**
@@ -29,36 +30,40 @@ public class ContactsJoinGroupsTest extends TestBase {
 
     if (app.db().groups().size() ==0) {
       app.goTo().groupPage();
-      //Создаем уникальную группу: currentTimeMillis почему-то записал только дату, нагуглила др. метод
+      //Создаем уникальную группу
       app.group().create(new GroupData().withName(String.format("test%s", new Date(System.nanoTime()))));
     }
-    if (app.db().contacts().size() == 0) {
-      app.goTo().homePage();
-      app.contact().create(new ContactData().withFirstname("Vasya").withLastname("Ivanov"));
-    }
-    //Создать метод для проверки связи выбранного контакта с группой
+    //Вместо сложных проверок просто добавляем контакт; далее найдем его по максимальному id
+    app.goTo().homePage();
+    app.contact().create(new ContactData().withFirstname("Test").withLastname("oops"));
   }
 
+
   @Test
-  public void testAddContactToGroup() {
+  public void testContactsJoinGroups() {
+    
     ContactSuite contacts = app.db().contacts();
     GroupSuite groups = app.db().groups();
-    ContactData thisContact = contacts.iterator().next();
+     //Юзаем максимальный id: группу по нему не выбрать, зато контакт можно!
     GroupData thisGroup = groups.iterator().next();
-    /* нафиг максимальный id, из списка по нему не выбрать
-    GroupData thisGroup1 = groups.iterator().next().withId(groups.stream()
-            .mapToInt(GroupData::getId).max().getAsInt());*/
+    ContactData thisContact = contacts.iterator().next().withId(contacts.stream()
+            .mapToInt(ContactData::getId).max().getAsInt());
     app.goTo().homePage();
     app.contact().selectContactById(thisContact.getId());
     app.contact().selectThisGroup(thisGroup);
     app.contact().addContactToGroup();
     app.goTo().homePage();
     ContactData dbContact = app.db().oneContact(thisContact.getId());
-
     assertThat(dbContact.getGroups(), contains(thisGroup));
-  }
+    System.out.println("Контакт с id " + thisContact.getId() + " добавлен в группу " + thisGroup.getName());
 
-  @Test(enabled = false)
-  public void testDeleteContactFromGroup() {
+    app.goTo().homePage();
+    app.contact().showContactsInGroup(thisGroup);
+    app.contact().selectContactById(thisContact.getId());
+    app.contact().deleteContactFromGroup();
+    app.goTo().homePage();
+    ContactData dbContactWithoutGroup = app.db().oneContact(thisContact.getId());
+    assertThat(dbContactWithoutGroup.getGroups(), not(hasItem(thisGroup)) );
+    System.out.println("Контакт с id " + thisContact.getId() + " удален из группы " + thisGroup.getName());
   }
 }
