@@ -6,10 +6,11 @@ public class Hello {
     printText(" from the outside");
     System.out.println("Для n = 5 результат " + Primes.isPrime(5) + "; res = " + Primes.res);
 
-    Point p = new Point(2,4,3,7);
+    Point p1 = new Point(2,4);
+    Point p2 = new Point(3,7);
 
-    System.out.println("Расстояние между точками с координатами " + p.x1 + " , " + p.y1 + " и "
-            + p.x2 + " , " + p.y2 + " = " + p.distance());
+    System.out.println("Расстояние между точками с координатами " + p1.x + " , " + p1.y + " и "
+            + p2.x + " , " + p2.y + " = " + Point.distance(p1,p2));
 
 
     Square s = new Square(5);

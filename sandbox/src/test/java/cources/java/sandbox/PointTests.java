@@ -11,15 +11,18 @@ public class PointTests {
   @Test
   public void checkSum() {
     //не очень точный тест, т.к. может пропустить ошибки в формуле
-    Point n = new Point(1,1,1,1);
-    Assert.assertEquals(n.distance(), 0.0);
+    Point p1 = new Point(1,1);
+    Point p2 = new Point(1,1);
+    Assert.assertEquals(Point.distance(p1,p2), 0.0);
   }
 
   @Test
   public void checkSum1() {
-    Point p = new Point(2,4,3,7);
+    Point p1 = new Point(2,4);
+    Point p2 = new Point(3,7);
     //проверяем один и тот же результат разными способами
-    Assert.assertEquals(p.distance(), 3.1622776601683795);
-    Assert.assertEquals(p.distance(), Math.sqrt(((p.x2 - p.x1) * (p.x2 - p.x1))+((p.y2 - p.y1)*(p.y2 - p.y1))));
+    Assert.assertEquals(Point.distance(p1,p2), Math.sqrt(10));
+    Assert.assertEquals(Point.distance(p1,p2), Math.sqrt(((p2.x - p1.x) * (p2.x - p1.x))+
+            ((p2.y - p1.y)*(p2.y - p1.y))));
   }
 }
